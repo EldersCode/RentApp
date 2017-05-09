@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Rent App</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="open_gps_title">Asking Permission</string>
+    <string name="open_gps_message">Asking Permission</string>
+    <string name="open_gps_yes">Yes</string>
+    <string name="open_gps_no">No</string>
+    <string name="facebook_app_id">1178647528925471</string>
+    <string name="fb_login_protocol_scheme">fb1178647528925471</string>
+</resources>
