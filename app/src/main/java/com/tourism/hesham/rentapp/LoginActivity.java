@@ -174,6 +174,8 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
+
+
     private void handleFacebookAccessToken(AccessToken token) {
 
         AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
