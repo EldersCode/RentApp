@@ -1,7 +1,6 @@
 package com.tourism.hesham.rentapp;
 
 import android.Manifest;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -14,7 +13,6 @@ import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
@@ -23,8 +21,6 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.facebook.Profile;
-import com.facebook.internal.LoginAuthorizationType;
 import com.facebook.login.LoginManager;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -40,7 +36,6 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.squareup.picasso.Picasso;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -94,19 +89,20 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         profileName = (TextView)headerView.findViewById(R.id.profile_name);
         profileId = (TextView)headerView.findViewById(R.id.profile_id);
 
+        //////////////// hena ya H b3ml retrieve lel data mn el facebook ely b3taha mn el loginActivity
+        //put user profile info to navigation drawer
 
+        try {
+            Bundle bundle = getIntent().getExtras();
+            String name = bundle.getString("name");
+            String img = bundle.getString("imageUrl");
+            String id = bundle.getString("id");
+            profileName.setText(name);
+            profileId.setText(id);
 
-        /*elta3deel ya gama3a ana msh ba5od eldata bta3et el profile mn el login activity ana bstad3y el data mn el profile
-        gowa el maps activity hena 3shan moshkelet el back button b3d ma b3ml logout w byraga3ni lel map tani*/
-
-        /////////// hena ya H te2dar teb3t el data lel firebase mn el profile object ..
-
-            // put user data into navigation drawer header ....
-        try{
-            Profile profile = Profile.getCurrentProfile();
-            profileName.setText(profile.getName());
-            profileId.setText(profile.getId());
-            Picasso.with(this).load(profile.getProfilePictureUri(100,100)).into(profileImg);
+            Picasso.with(this)
+                    .load(img)
+                    .into(profileImg);
 
         }catch (Exception e){
 
@@ -286,43 +282,20 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         } else if (id == R.id.morsy) {
             startActivity(new Intent(getApplicationContext(), EventsActivity.class));
         } else if (id == R.id.logout){
-
-            //n5ally el info ely fl nav header teb2a empty ..
-            profileName.setText("");
-            profileImg.clearAnimation();
-            profileId.setText("");
-
             Intent intent = new Intent(getApplicationContext() , LoginActivity.class);
             startActivity(intent);
             finish();
             FirebaseAuth.getInstance().signOut();
             LoginManager.getInstance().logOut();
+
+            //n5ally el info ely fl nav header teb2a empty ..
+            profileName.setText("");
+            profileImg.clearAnimation();
+            profileId.setText("");
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return false;
     }
-
-    /* hena bzbt el back button 3shan lw el drawer mfto7 yet2afal .. else bstad3y el super
-                  (hena ana 3aml fl manifest el maps activity has no history w bl taly
-              lma bados back bytl3 barra el app msh byfdl yft7 el map kol shwaya zai zaman)*/
-    @Override
-    public void onBackPressed() {
-        DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
-            drawerLayout.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-        }
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        Profile profile = Profile.getCurrentProfile();
-        Log.i("Facebook name" , profile.getName());
-    }
-
-
 }
