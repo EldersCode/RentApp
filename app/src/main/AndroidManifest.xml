@@ -39,7 +39,8 @@
 
         <activity
             android:name=".MapsActivity"
-            android:label="@string/title_activity_maps">
+            android:label="@string/title_activity_maps"
+            android:noHistory="true">
 
         </activity>
         <activity android:name=".AdvertiseActivity" />
