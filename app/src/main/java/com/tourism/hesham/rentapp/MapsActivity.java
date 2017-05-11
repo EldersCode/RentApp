@@ -313,16 +313,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            finishAffinity();
         }
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        Profile profile = Profile.getCurrentProfile();
-        Log.i("Facebook name" , profile.getName());
-    }
 
 
 }
