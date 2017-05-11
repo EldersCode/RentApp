@@ -43,8 +43,10 @@
             android:noHistory="true">
 
         </activity>
-        <activity android:name=".AdvertiseActivity" />
-        <activity android:name=".EventsActivity" />
+        <activity android:name=".AdvertiseActivity"
+            android:noHistory="false"/>
+        <activity android:name=".EventsActivity"
+            android:noHistory="false"/>
         <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
