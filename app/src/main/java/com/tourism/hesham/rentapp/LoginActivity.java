@@ -51,6 +51,7 @@ public class LoginActivity extends AppCompatActivity {
     CallbackManager callbackManager;
     AccessTokenTracker accessTokenTracker;
     ProfileTracker profileTracker;
+    private Button facebook_btn;
 
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
@@ -88,6 +89,13 @@ public class LoginActivity extends AppCompatActivity {
             startActivity(intent);
         }
         loginWithFB();
+        facebook_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                login_btn.performClick();
+            }
+        });
+
 
 
 
@@ -98,6 +106,7 @@ public class LoginActivity extends AppCompatActivity {
     private void initiallizeControls(){
         callbackManager = CallbackManager.Factory.create();
         login_btn = (LoginButton) findViewById(R.id.login_button);
+        facebook_btn = (Button)findViewById(R.id.myfacebook);
 
     }
 
