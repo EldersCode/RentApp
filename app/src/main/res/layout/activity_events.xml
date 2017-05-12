@@ -72,7 +72,7 @@
         android:text="@string/event_available_Tickets_Text"
         android:textSize="24sp"
         android:textStyle="bold"
-        android:layout_below="@+id/textView2"
+        android:layout_below="@+id/eventtype"
         android:layout_alignParentStart="true"
         android:layout_marginTop="35dp" />
 
