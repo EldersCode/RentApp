@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.tourism.hesham.rentapp.LoginActivity"
-    android:background="@drawable/lonesome_in_the_galaxy_978">
+    android:background="@drawable/moutinstars2">
 
     <EditText
         android:id="@+id/Username"

@@ -7,4 +7,7 @@
     <string name="open_gps_no">No</string>
     <string name="facebook_app_id">1178647528925471</string>
     <string name="fb_login_protocol_scheme">fb1178647528925471</string>
+    <string name="Event_Location_Text">Location</string>
+    <string name="event_type_Text">Event Type </string>
+    <string name="event_available_Tickets_Text">#Tickets Available </string>
 </resources>
