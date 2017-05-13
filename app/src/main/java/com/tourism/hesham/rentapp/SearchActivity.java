@@ -49,7 +49,6 @@ public class SearchActivity extends AppCompatActivity implements GoogleApiClient
     private RecyclerAdapter recyclerAdapter;
     private EditText search_editText;
     private ImageView search_img;
-    private TextView msg;
 
     final static String fixedHttp = "https://maps.googleapis.com/maps/api/geocode/json?";
     final static String apiKey = "AIzaSyB9m1fot-VHreEUQxeMNQaF3RJ92VL6f_0";
@@ -105,7 +104,6 @@ public class SearchActivity extends AppCompatActivity implements GoogleApiClient
     private void Initializing(){
         search_editText = (EditText)findViewById(R.id.search_editText);
         search_img = (ImageView)findViewById(R.id.search_img);
-        msg = (TextView)findViewById(R.id.msg);
         recyclerAdapter = new RecyclerAdapter(this, R.layout.recycler_row , googleApiClient, myBounds , null);
         mRecyclerView = (RecyclerView) findViewById(R.id.recyclerId);
         linearLayoutManager = new LinearLayoutManager(this);
@@ -117,28 +115,6 @@ public class SearchActivity extends AppCompatActivity implements GoogleApiClient
 
 //        search_editText.animate().alpha(1.0f).y(300f).rotation(360).setDuration(3000);
 //        search_img.animate().y(310f).setDuration(3000);
-        msg.animate().alpha(0.0f).scaleX(20f).scaleY(20f).setDuration(4000).setListener(new Animator.AnimatorListener() {
-            @Override
-            public void onAnimationStart(Animator animation) {
-
-            }
-
-            @Override
-            public void onAnimationEnd(Animator animation) {
-
-
-            }
-
-            @Override
-            public void onAnimationCancel(Animator animation) {
-
-            }
-
-            @Override
-            public void onAnimationRepeat(Animator animation) {
-
-            }
-        });
 
     }
 
