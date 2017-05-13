@@ -76,6 +76,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         LocationListener,
         NavigationView.OnNavigationItemSelectedListener {
 
+    View headerView;
     NavigationView navigationView;
     private GoogleMap mMap;
     GoogleApiClient mGoogleApiClient;
@@ -128,7 +129,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         //Initiallizing header component
 
-        View headerView = navigationView.getHeaderView(0);
+         headerView = navigationView.getHeaderView(0);
         profileImg = (CircleImageView)headerView.findViewById(R.id.circularImageView);
         profileName = (TextView)headerView.findViewById(R.id.profile_name);
         profileId = (TextView)headerView.findViewById(R.id.profile_id);
@@ -375,15 +376,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private void HandleSearchET(){
 
-        View layout = navigationView.findViewById(R.id.search_layout);
-        search_editText = (EditText)layout.findViewById(R.id.search_editText);
-        search_editText = (EditText) findViewById(R.id.search_editText);
+        search_editText = (EditText)headerView.findViewById(R.id.search_editText);
         recyclerAdapter = new RecyclerAdapter(this, R.layout.recycler_row , mGoogleApiClient, myBounds , null);
-        mRecyclerView = (RecyclerView) findViewById(R.id.recyclerId);
+        mRecyclerView = (RecyclerView) headerView.findViewById(R.id.recyclerId);
         linearLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(linearLayoutManager);
         mRecyclerView.setAdapter(recyclerAdapter);
-        search_img = (ImageView) layout.findViewById(R.id.search_img);
+        search_img = (ImageView) headerView.findViewById(R.id.search_img);
 
         search_editText.addTextChangedListener(new TextWatcher() {
             @Override
