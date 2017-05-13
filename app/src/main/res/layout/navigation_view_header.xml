@@ -80,6 +80,7 @@
             android:textColorHint="#565656"
             android:gravity="center"
             android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
             />
 
 
