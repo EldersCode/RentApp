@@ -80,10 +80,10 @@ import handling.recycler.Recycler_Listener;
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
-        LocationListener,
+        LocationListener
+        ,AsyncResponse,
         NavigationView.OnNavigationItemSelectedListener {
 
-    int counter = 0;
     View headerView;
     NavigationView navigationView;
     private GoogleMap mMap;
@@ -94,19 +94,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private Button navigation_btn;
     private TextView profileName , profileId;
     private CircleImageView profileImg;
-    //search edit text and recyler variables
-    private static final LatLngBounds myBounds = new LatLngBounds(
-            new LatLng(-0,0),new LatLng(0,0));
-
     private EditText search_editText;
-    private RecyclerView mRecyclerView;
-    private LinearLayoutManager linearLayoutManager;
-    private RecyclerAdapter recyclerAdapter;
-    private ImageView search_img;
 
-    final static String fixedHttp = "https://maps.googleapis.com/maps/api/geocode/json?";
-    final static String apiKey = "AIzaSyB9m1fot-VHreEUQxeMNQaF3RJ92VL6f_0";
-    String  httpWeb;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -145,8 +134,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         profileId = (TextView)headerView.findViewById(R.id.profile_id);
 
         //initializing search edit text here
-        HandleSearchET();
+//        HandleSearchET();
 
+
+        search_editText = (EditText)headerView.findViewById(R.id.search_editText);
 
         search_editText.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -178,25 +169,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         });
 
 
-
-
-        //retieve data after search button clicked
-        search_img.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-
-                if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
-                    drawerLayout.closeDrawer(GravityCompat.START);
-                }
-                findAddress();
-                search_editText.getText().clear();
-                     }
-        });
-
-
-
-
         /*elta3deel ya gama3a ana msh ba5od eldata bta3et el profile mn el login activity ana bstad3y el data mn el profile
         gowa el maps activity hena 3shan moshkelet el back button b3d ma b3ml logout w byraga3ni lel map tani*/
 
@@ -214,8 +186,26 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
 
 
+        try {
+            Bundle bundle = getIntent().getExtras();
+            String address = bundle.getString("httpWeb");
+            Log.i("MainActivity encoded", address);
+
+            // we open connection by the DownloadTask Class
+            DownloadTask task = new DownloadTask();
+            // we used the interface to get the data we have after the onPostExecute method finished to use it ..
+            task.delegate = this;
+            task.execute(address);
+
+        }catch (Exception exp){
+            //   Toast.makeText(this, "This Place not found or connection lost ..", Toast.LENGTH_SHORT).show();
+
+        }
 
     }
+
+
+
 
 
     /**
@@ -462,281 +452,134 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
     }
 
-    private void HandleSearchET(){
 
-        search_editText = (EditText)headerView.findViewById(R.id.search_editText);
-        recyclerAdapter = new RecyclerAdapter(this, R.layout.recycler_row , mGoogleApiClient, myBounds , null);
-        mRecyclerView = (RecyclerView) headerView.findViewById(R.id.recyclerId);
-        linearLayoutManager = new LinearLayoutManager(this);
-        mRecyclerView.setLayoutManager(linearLayoutManager);
-        mRecyclerView.setAdapter(recyclerAdapter);
-        search_img = (ImageView) headerView.findViewById(R.id.search_img);
-
-        //handling on text change to get recycler data
-
-        search_editText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-                if(!s.toString().equals("") && mGoogleApiClient.isConnected()){
-                    mRecyclerView.setVisibility(View.VISIBLE);
-                    profileImg.setVisibility(View.GONE);
-                    profileName.setVisibility(View.GONE);
-                    profileId.setVisibility(View.GONE);
-                    recyclerAdapter.getFilter().filter(s.toString());
-                }
-                else if(!mGoogleApiClient.isConnected()){
-                    Toast.makeText(getApplicationContext(), "Google API Client is not connected", Toast.LENGTH_SHORT).show();
-
-                }
-                else if(search_editText.getText().length() == 0){
-                    mRecyclerView.setVisibility(View.GONE);
-                    profileImg.setVisibility(View.VISIBLE);
-                    profileName.setVisibility(View.VISIBLE);
-                    profileId.setVisibility(View.VISIBLE);
-                }
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
-
-
-        //handling on item clicked on recycler view
-
-        mRecyclerView.addOnItemTouchListener(
-
-                new Recycler_Listener(this, new Recycler_Listener.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(View view , int position) {
-                        final RecyclerAdapter.AT_Place item = recyclerAdapter.getItem(position);
-                        final String placeId = String.valueOf(item.placeId);
-
-                        /*
-                             Issue a request to the Places Geo Data API to retrieve a Place object with additional details about the place.
-                         */
-
-                        PendingResult<PlaceBuffer> placeResult = Places.GeoDataApi
-                                .getPlaceById(mGoogleApiClient, placeId);
-                        placeResult.setResultCallback(new ResultCallback<PlaceBuffer>() {
-                            @Override
-                            public void onResult(PlaceBuffer places) {
-                                if(places.getCount()==1){
-                                    //Do the things here on Click.....
-                                    Toast.makeText(getApplicationContext(),String.valueOf(places.get(0).getLatLng()),Toast.LENGTH_SHORT).show();
-
-                                    //////////// hena bageb el latitude w el longitude w ab3thom lel map !! aw a7sn a5ally el edit text yeb2a feh el address
-                                    search_editText.setText(String.valueOf(places.get(0).getAddress()));
-                                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(places.get(0).getLatLng(), 10));
-                                    mRecyclerView.setVisibility(View.GONE);
-
-                                }else {
-                                    Toast.makeText(getApplicationContext(),"Something went wrong !",Toast.LENGTH_SHORT).show();
-                                }
-                            }
-                        });
-                        Log.i("TAG", "Clicked: " + item.description);
-                        Log.i("TAG", "Called getPlaceById to get Place details for " + item.placeId);
-                    }
-                })
-        );
-
-
-
-
-    }
-
-    private void findAddress(){
-        InputMethodManager inputMethod = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        inputMethod.hideSoftInputFromWindow(search_editText.getWindowToken(),0);
+    @Override
+    public void processFinish(String output) {
+        Log.i("output" , output);
 
         try {
 
-            if (search_editText.length() == 0) {
-                Log.i("Empty" , "EditText is Empty");
-                Toast.makeText(this, "Please enter the address you want to search for ..", Toast.LENGTH_SHORT).show();
-            } else {
+            JSONObject jsonObject = new JSONObject(output);
+            String results = jsonObject.getString("results");
+            Log.i("results" , results);
+            JSONArray arr = new JSONArray(results);
 
 
-                //hn5ally el search editText yeb2a feh + ben kol kelma fl address (n7welha le URL form)
-
-                String encodedAddress = URLEncoder.encode(search_editText.getText().toString(), "UTF-8");
-                httpWeb = fixedHttp + "address=" + encodedAddress + "&key=" + apiKey;
-
-                Log.i("httpWeb", httpWeb);
 
 
-                //getting lat & lng by Volley library
+            // getting lat & lng from jason
 
-                    JsonArrayRequest request = new JsonArrayRequest(httpWeb, new Response.Listener<JSONArray>() {
-                        @Override
-                        public void onResponse(JSONArray response) {
+            for(int i=0 ; i<arr.length() ; i++){
 
-                            for (int i = 0 ; i< response.length() ; i++){
-
-                                try {
-                                    JSONObject jsonObject = response.getJSONObject(i);
-                                    JSONObject jsonGeometry = jsonObject.getJSONObject("geometry");
-//                                    JSONObject jsonLocation = jsonGeometry.getJSONObject("location");
-                                    String lat = jsonGeometry.getString("lat");
-                                    String lng = jsonGeometry.getString("lng");
-
-                                    //parse lat & lng to Double
-                                    Double latitude = Double.valueOf(lat);
-                                    Double longitude = Double.valueOf(lng);
-
-                                    Log.i("location lat", lat);
-                                    Log.i("location lng" , lng);
-
-                                    //h3ml animate lel camera 3la el lat w el lng dol
-
-                                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latitude, longitude), 12));
+                JSONObject jsonPart = arr.getJSONObject(i);
+                JSONObject jsonGeometry = jsonPart.getJSONObject("geometry");
+                JSONObject jsonLocation = jsonGeometry.getJSONObject("location");
+                String lat = jsonLocation.getString("lat");
+                String lng = jsonLocation.getString("lng");
 
 
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
+                Double  latitude = Double.valueOf(lat);
+                Double  longitude = Double.valueOf(lng);
+                Log.i("lat & lng :" , latitude + "  " +longitude);
 
-
-                            }
-
-                        }
-                    }, new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-
-                            Toast.makeText(MapsActivity.this, "Something went wrong !", Toast.LENGTH_SHORT).show();
-
-                        }
-                    });
-
-                AppController.getInstance().addToRequestQueue(request);
-
-
+                //b7rk el camera 3al makan fl map
+                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latitude, longitude), 7));
 
             }
-        } catch(UnsupportedEncodingException e){
+
+        } catch (JSONException e) {
+            Toast.makeText(this, "This Place not found or connection lost ..", Toast.LENGTH_SHORT).show();
             e.printStackTrace();
-            Toast.makeText(this, "Please enter the address you want to search for ..", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    //here the download task class to handle retrieving data from api
+
+     private  class DownloadTask extends AsyncTask<String , Void , String> {
+
+        Double latitude;
+        Double longitude;
+
+        public AsyncResponse delegate = null;
+
+
+
+
+        @Override
+        protected String doInBackground(String... urls) {
+
+            String result = "";
+            URL url;
+            HttpURLConnection connection;
+
+            try {
+
+                url = new URL(urls[0]);
+                connection = (HttpURLConnection) url.openConnection();
+                InputStream in = connection.getInputStream();
+                InputStreamReader reader = new InputStreamReader(in);
+
+
+                int data = reader.read();
+                while (data != -1){
+
+                    char current = (char) data;
+                    result += current;
+                    data = reader.read();
+                }
+
+                return result;
+
+
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            return null;
+
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+
+            try {
+
+                JSONObject jsonObject = new JSONObject(result);
+                String results = jsonObject.getString("results");
+                Log.i("results" , results);
+                JSONArray arr = new JSONArray(results);
+
+                for(int i=0 ; i<arr.length() ; i++){
+
+                    JSONObject jsonPart = arr.getJSONObject(i);
+                    JSONObject jsonGeometry = jsonPart.getJSONObject("geometry");
+                    JSONObject jsonLocation = jsonGeometry.getJSONObject("location");
+                    String lat = jsonLocation.getString("lat");
+                    String lng = jsonLocation.getString("lng");
+
+                    latitude = Double.valueOf(lat);
+                    longitude = Double.valueOf(lng);
+                    Log.i("lat & lng :" , latitude + "  " +longitude);
+
+
+                }
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+
+
+            delegate.processFinish(result);
+
+
         }
 
     }
 
-//    public class DownloadTask extends AsyncTask<String , Void , String> {
-//
-//        Double latitude;
-//        Double longitude;
-//
-//        @Override
-//        protected String doInBackground(String... urls) {
-//
-//            String result = "";
-//            URL url;
-//            HttpURLConnection connection;
-//
-//            try {
-//
-//                url = new URL(urls[0]);
-//                connection = (HttpURLConnection) url.openConnection();
-//                InputStream in = connection.getInputStream();
-//                InputStreamReader reader = new InputStreamReader(in);
-//
-//
-//                int data = reader.read();
-//                while (data != -1){
-//
-//                    char current = (char) data;
-//                    result += current;
-//                    data = reader.read();
-//                }
-//
-//                return result;
-//
-//
-//            } catch (MalformedURLException e) {
-//                e.printStackTrace();
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//
-//            return null;
-//
-//        }
-//
-//        @Override
-//        protected void onPostExecute(String result) {
-//            super.onPostExecute(result);
-//
-//            try {
-//
-//                JSONObject jsonObject = new JSONObject(result);
-//                String results = jsonObject.getString("results");
-//                Log.i("results" , results);
-//                JSONArray arr = new JSONArray(results);
-//
-//
-//
-//
-//                // getting lat & lng from jason
-//
-//                for(int i=0 ; i<arr.length() ; i++){
-//
-//                    JSONObject jsonPart = arr.getJSONObject(i);
-//                    JSONObject jsonGeometry = jsonPart.getJSONObject("geometry");
-//                    JSONObject jsonLocation = jsonGeometry.getJSONObject("location");
-//                    String lat = jsonLocation.getString("lat");
-//                    String lng = jsonLocation.getString("lng");
-//
-//
-//                      latitude = Double.valueOf(lat);
-//                      longitude = Double.valueOf(lng);
-//                    Log.i("lat & lng :" , latitude + "  " +longitude);
-//
-//                    //b3ml kol marra clear lel marker 3shan myb2ash kteer l7d ma a3ml option delete
-//
-//                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latitude, longitude), 12));
-//
-//                }
-//
-//            } catch (JSONException e) {
-//                Toast.makeText(getApplicationContext(), "This Place not found or connection lost ..", Toast.LENGTH_SHORT).show();
-//                e.printStackTrace();
-//            }
-//        }
-//
-//
-//    }
 
-
-    float dX , dY;
-
-
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        switch (event.getAction()){
-            case MotionEvent.ACTION_DOWN :
-                dX = profileImg.getX() - event.getRawX();
-                dY = profileImg.getY() - event.getRawY();
-                break;
-            case MotionEvent.ACTION_MOVE:
-                profileImg.animate()
-                        .x(event.getRawX() + dX)
-                        .y(event.getRawY() + dY)
-                        .setDuration(2)
-                        .start();
-                break;
-            default:
-                return false;
-        }
-        return true;
-    }
 }
 

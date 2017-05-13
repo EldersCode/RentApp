@@ -24,6 +24,7 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.places.PlaceBuffer;
 import com.google.android.gms.location.places.Places;
 import com.google.android.gms.maps.model.LatLng;
@@ -57,6 +58,7 @@ public class SearchActivity extends AppCompatActivity implements GoogleApiClient
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
+        buildGoogleApiClient();
 
         Initializing();
         animating();
@@ -66,6 +68,31 @@ public class SearchActivity extends AppCompatActivity implements GoogleApiClient
 
 
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (!googleApiClient.isConnected() && !googleApiClient.isConnecting() ){
+            googleApiClient.connect();
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (googleApiClient.isConnected()){
+            googleApiClient.disconnect();
+        }
+    }
+
+    protected synchronized void buildGoogleApiClient(){
+        googleApiClient = new GoogleApiClient.Builder(this)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(LocationServices.API)
+                .addApi(Places.GEO_DATA_API)
+                .build();
     }
 
     @Override
@@ -88,8 +115,8 @@ public class SearchActivity extends AppCompatActivity implements GoogleApiClient
 
     private void animating(){
 
-        search_editText.animate().alpha(1.0f).y(300f).rotation(360).setDuration(3000);
-        search_img.animate().y(310f).setDuration(3000);
+//        search_editText.animate().alpha(1.0f).y(300f).rotation(360).setDuration(3000);
+//        search_img.animate().y(310f).setDuration(3000);
         msg.animate().alpha(0.0f).scaleX(20f).scaleY(20f).setDuration(4000).setListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animation) {
@@ -163,15 +190,13 @@ public class SearchActivity extends AppCompatActivity implements GoogleApiClient
                             public void onResult(PlaceBuffer places) {
                                 if(places.getCount()==1){
                                     //Do the things here on Click.....
-                                    Toast.makeText(getApplicationContext(),String.valueOf(places.get(0).getLatLng()),Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getApplicationContext(), "please click on Search button on the left ..",Toast.LENGTH_SHORT).show();
+
+                                    //LatLng latLng = String.valueOf(places.get(0).getLatLng()) ;
 
                                     //////////// hena bageb el latitude w el longitude w ab3thom lel map !! aw a7sn a5ally el edit text yeb2a feh el address
                                     search_editText.setText(String.valueOf(places.get(0).getAddress()));
                                     mRecyclerView.setVisibility(View.GONE);
-//                            Intent intent = new Intent(getApplicationContext() , MapsActivity.class);
-//                            intent.putExtra("name",String.valueOf(places.get(0).getLatLng()));
-//                            startActivity(intent);
-
 
                                 }else {
                                     Toast.makeText(getApplicationContext(),"Something went wrong !",Toast.LENGTH_SHORT).show();
