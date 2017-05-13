@@ -10,4 +10,5 @@
     <string name="Event_Location_Text">Location</string>
     <string name="event_type_Text">Event Type </string>
     <string name="event_available_Tickets_Text">#Tickets Available </string>
+    <string name="search_city">search ..</string>
 </resources>

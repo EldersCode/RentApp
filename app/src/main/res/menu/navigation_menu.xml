@@ -4,7 +4,7 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_location"
-            android:icon="@mipmap/placeholder"
+            android:icon="@mipmap/placeholderold"
             android:title="Set Location"
             />
 
@@ -26,7 +26,6 @@
 
 
     </group>
-
 
 </menu>
 
