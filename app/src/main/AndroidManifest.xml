@@ -41,7 +41,7 @@
         <activity
             android:name=".MapsActivity"
             android:label="@string/title_activity_maps"
-            android:noHistory="true"></activity>
+            />
         <activity android:name=".AdvertiseActivity" />
         <activity android:name=".EventsActivity" />
         <activity android:name=".LoginActivity">
@@ -67,7 +67,7 @@
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
-        <activity android:name=".SearchActivity"></activity>
+        <activity android:name=".SearchActivity"/>
     </application>
 
 </manifest>
