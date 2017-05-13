@@ -1,5 +1,6 @@
 package com.tourism.hesham.rentapp;
 
+import android.animation.Animator;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -20,6 +21,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -84,10 +86,10 @@ public class LoginActivity extends AppCompatActivity {
 
 
 
-        if (login_btn.getText().equals("Log out")) {
-            Intent intent = new Intent(getApplicationContext(), MapsActivity.class);
-            startActivity(intent);
-        }
+//        if (login_btn.getText().equals("Log out")) {
+//            Intent intent = new Intent(getApplicationContext(), MapsActivity.class);
+//            startActivity(intent);
+//        }
         loginWithFB();
         facebook_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -134,6 +136,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onSuccess(LoginResult loginResult) {
 
+                anime();
                 ProgressDialog progressDialog = new ProgressDialog(LoginActivity.this);
                 progressDialog.setMessage("Logging in please wait ...");
                 progressDialog.show();
@@ -197,18 +200,18 @@ public class LoginActivity extends AppCompatActivity {
 
                             FirebaseUser user = mAuth.getCurrentUser();
                             Profile profile = Profile.getCurrentProfile();
-                            Intent main = new Intent(getApplicationContext() , MapsActivity.class);
-                            // sending user data to MapsActivity from facebook account :
-
-                            main.putExtra("name" , profile.getName());
-                            main.putExtra("imageUrl" , profile.getProfilePictureUri(100,100).toString());
-                            main.putExtra("id",profile.getId());
+//                            Intent main = new Intent(getApplicationContext() , MapsActivity.class);
+//                            // sending user data to MapsActivity from facebook account :
+//
+//                            main.putExtra("name" , profile.getName());
+//                            main.putExtra("imageUrl" , profile.getProfilePictureUri(100,100).toString());
+//                            main.putExtra("id",profile.getId());
 
 
 
                             Toast.makeText(getApplicationContext(), "Welcome "+ profile.getName() + " :)", Toast.LENGTH_LONG).show();
-                            startActivity(main);
-                            finish();
+//                            startActivity(main);
+//                            finish();
 
                         } else {
                             // If sign in fails, display a message to the user.
@@ -233,5 +236,31 @@ public class LoginActivity extends AppCompatActivity {
     public void onBackPressed() {
         finishAffinity();
     }
+
+    private void anime(){
+        RelativeLayout relativeLayout = (RelativeLayout)findViewById(R.id.login_id);
+        relativeLayout.animate().alpha(0.0f).scaleX(25f).scaleY(25f).setDuration(1000).setListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+//                startActivity(new Intent(getApplicationContext(), MapsActivity.class));
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+
+            }
+        });
+    }
+
 }
 

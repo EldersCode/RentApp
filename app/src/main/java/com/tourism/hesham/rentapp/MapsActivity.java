@@ -1,6 +1,7 @@
 package com.tourism.hesham.rentapp;
 
 import android.Manifest;
+import android.animation.Animator;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -19,9 +20,12 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.text.method.MovementMethod;
 import android.util.Log;
+import android.view.DragEvent;
 import android.view.Gravity;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -30,6 +34,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.facebook.Profile;
 import com.facebook.login.LoginManager;
 import com.google.android.gms.common.ConnectionResult;
@@ -76,10 +83,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         LocationListener,
         NavigationView.OnNavigationItemSelectedListener {
 
+    int counter = 0;
     View headerView;
     NavigationView navigationView;
     private GoogleMap mMap;
-    GoogleApiClient mGoogleApiClient;
+    GoogleApiClient mGoogleApiClient , Geo;
     Location mLastLocation;
     Marker mCurrLocationMarker;
     LocationRequest mLocationRequest;
@@ -104,6 +112,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+        buildGoogleApiClient();
+
 
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             checkLocationPermission();
@@ -137,6 +147,39 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         //initializing search edit text here
         HandleSearchET();
 
+
+        search_editText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+                drawer.animate().alpha(0.0f).setDuration(1000).setListener(new Animator.AnimatorListener() {
+                    @Override
+                    public void onAnimationStart(Animator animation) {
+
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        startActivity(new Intent(getApplicationContext(),SearchActivity.class));
+                    }
+
+                    @Override
+                    public void onAnimationCancel(Animator animation) {
+
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animator animation) {
+
+                    }
+                });
+            }
+        });
+
+
+
+
         //retieve data after search button clicked
         search_img.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -145,10 +188,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                 if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
                     drawerLayout.closeDrawer(GravityCompat.START);
-                    findAddress();
                 }
+                findAddress();
+                search_editText.getText().clear();
                      }
         });
+
 
 
 
@@ -221,7 +266,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mLocationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.ACCESS_FINE_LOCATION)
-                == PackageManager.PERMISSION_GRANTED) {
+                == PackageManager.PERMISSION_GRANTED && mGoogleApiClient.isConnected()) {
             LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
         }
 
@@ -338,10 +383,53 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         if (id == R.id.nav_location) {
 
         } else if (id == R.id.salama) {
-            startActivity(new Intent(getApplicationContext() , AdvertiseActivity.class));
+            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+            drawer.animate().alpha(0.0f).setDuration(1000).setListener(new Animator.AnimatorListener() {
+                @Override
+                public void onAnimationStart(Animator animation) {
+
+                }
+
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    startActivity(new Intent(getApplicationContext() , AdvertiseActivity.class));                }
+
+                @Override
+                public void onAnimationCancel(Animator animation) {
+
+                }
+
+                @Override
+                public void onAnimationRepeat(Animator animation) {
+
+                }
+            });
+
 
         } else if (id == R.id.morsy) {
-            startActivity(new Intent(getApplicationContext(), EventsActivity.class));
+            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+            drawer.animate().alpha(0.0f).setDuration(1000).setListener(new Animator.AnimatorListener() {
+                @Override
+                public void onAnimationStart(Animator animation) {
+
+                }
+
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    startActivity(new Intent(getApplicationContext(), EventsActivity.class));
+                }
+                @Override
+                public void onAnimationCancel(Animator animation) {
+
+                }
+
+                @Override
+                public void onAnimationRepeat(Animator animation) {
+
+                }
+            });
+
+
         } else if (id == R.id.logout){
 
             //n5ally el info ely fl nav header teb2a empty ..
@@ -384,6 +472,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mRecyclerView.setAdapter(recyclerAdapter);
         search_img = (ImageView) headerView.findViewById(R.id.search_img);
 
+        //handling on text change to get recycler data
+
         search_editText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -394,11 +484,21 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             public void onTextChanged(CharSequence s, int start, int before, int count) {
 
                 if(!s.toString().equals("") && mGoogleApiClient.isConnected()){
+                    mRecyclerView.setVisibility(View.VISIBLE);
+                    profileImg.setVisibility(View.GONE);
+                    profileName.setVisibility(View.GONE);
+                    profileId.setVisibility(View.GONE);
                     recyclerAdapter.getFilter().filter(s.toString());
                 }
                 else if(!mGoogleApiClient.isConnected()){
                     Toast.makeText(getApplicationContext(), "Google API Client is not connected", Toast.LENGTH_SHORT).show();
 
+                }
+                else if(search_editText.getText().length() == 0){
+                    mRecyclerView.setVisibility(View.GONE);
+                    profileImg.setVisibility(View.VISIBLE);
+                    profileName.setVisibility(View.VISIBLE);
+                    profileId.setVisibility(View.VISIBLE);
                 }
 
             }
@@ -409,6 +509,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         });
 
+
+        //handling on item clicked on recycler view
 
         mRecyclerView.addOnItemTouchListener(
 
@@ -433,11 +535,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                                     //////////// hena bageb el latitude w el longitude w ab3thom lel map !! aw a7sn a5ally el edit text yeb2a feh el address
                                     search_editText.setText(String.valueOf(places.get(0).getAddress()));
+                                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(places.get(0).getLatLng(), 10));
                                     mRecyclerView.setVisibility(View.GONE);
-//                            Intent intent = new Intent(getApplicationContext() , MapsActivity.class);
-//                            intent.putExtra("name",String.valueOf(places.get(0).getLatLng()));
-//                            startActivity(intent);
-
 
                                 }else {
                                     Toast.makeText(getApplicationContext(),"Something went wrong !",Toast.LENGTH_SHORT).show();
@@ -475,6 +574,54 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 Log.i("httpWeb", httpWeb);
 
 
+                //getting lat & lng by Volley library
+
+                    JsonArrayRequest request = new JsonArrayRequest(httpWeb, new Response.Listener<JSONArray>() {
+                        @Override
+                        public void onResponse(JSONArray response) {
+
+                            for (int i = 0 ; i< response.length() ; i++){
+
+                                try {
+                                    JSONObject jsonObject = response.getJSONObject(i);
+                                    JSONObject jsonGeometry = jsonObject.getJSONObject("geometry");
+//                                    JSONObject jsonLocation = jsonGeometry.getJSONObject("location");
+                                    String lat = jsonGeometry.getString("lat");
+                                    String lng = jsonGeometry.getString("lng");
+
+                                    //parse lat & lng to Double
+                                    Double latitude = Double.valueOf(lat);
+                                    Double longitude = Double.valueOf(lng);
+
+                                    Log.i("location lat", lat);
+                                    Log.i("location lng" , lng);
+
+                                    //h3ml animate lel camera 3la el lat w el lng dol
+
+                                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latitude, longitude), 12));
+
+
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+
+
+                            }
+
+                        }
+                    }, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+
+                            Toast.makeText(MapsActivity.this, "Something went wrong !", Toast.LENGTH_SHORT).show();
+
+                        }
+                    });
+
+                AppController.getInstance().addToRequestQueue(request);
+
+
+
             }
         } catch(UnsupportedEncodingException e){
             e.printStackTrace();
@@ -483,90 +630,113 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     }
 
-    public class DownloadTask extends AsyncTask<String , Void , String> {
+//    public class DownloadTask extends AsyncTask<String , Void , String> {
+//
+//        Double latitude;
+//        Double longitude;
+//
+//        @Override
+//        protected String doInBackground(String... urls) {
+//
+//            String result = "";
+//            URL url;
+//            HttpURLConnection connection;
+//
+//            try {
+//
+//                url = new URL(urls[0]);
+//                connection = (HttpURLConnection) url.openConnection();
+//                InputStream in = connection.getInputStream();
+//                InputStreamReader reader = new InputStreamReader(in);
+//
+//
+//                int data = reader.read();
+//                while (data != -1){
+//
+//                    char current = (char) data;
+//                    result += current;
+//                    data = reader.read();
+//                }
+//
+//                return result;
+//
+//
+//            } catch (MalformedURLException e) {
+//                e.printStackTrace();
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//
+//            return null;
+//
+//        }
+//
+//        @Override
+//        protected void onPostExecute(String result) {
+//            super.onPostExecute(result);
+//
+//            try {
+//
+//                JSONObject jsonObject = new JSONObject(result);
+//                String results = jsonObject.getString("results");
+//                Log.i("results" , results);
+//                JSONArray arr = new JSONArray(results);
+//
+//
+//
+//
+//                // getting lat & lng from jason
+//
+//                for(int i=0 ; i<arr.length() ; i++){
+//
+//                    JSONObject jsonPart = arr.getJSONObject(i);
+//                    JSONObject jsonGeometry = jsonPart.getJSONObject("geometry");
+//                    JSONObject jsonLocation = jsonGeometry.getJSONObject("location");
+//                    String lat = jsonLocation.getString("lat");
+//                    String lng = jsonLocation.getString("lng");
+//
+//
+//                      latitude = Double.valueOf(lat);
+//                      longitude = Double.valueOf(lng);
+//                    Log.i("lat & lng :" , latitude + "  " +longitude);
+//
+//                    //b3ml kol marra clear lel marker 3shan myb2ash kteer l7d ma a3ml option delete
+//
+//                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latitude, longitude), 12));
+//
+//                }
+//
+//            } catch (JSONException e) {
+//                Toast.makeText(getApplicationContext(), "This Place not found or connection lost ..", Toast.LENGTH_SHORT).show();
+//                e.printStackTrace();
+//            }
+//        }
+//
+//
+//    }
 
-        Double latitude;
-        Double longitude;
 
-        @Override
-        protected String doInBackground(String... urls) {
-
-            String result = "";
-            URL url;
-            HttpURLConnection connection;
-
-            try {
-
-                url = new URL(urls[0]);
-                connection = (HttpURLConnection) url.openConnection();
-                InputStream in = connection.getInputStream();
-                InputStreamReader reader = new InputStreamReader(in);
+    float dX , dY;
 
 
-                int data = reader.read();
-                while (data != -1){
-
-                    char current = (char) data;
-                    result += current;
-                    data = reader.read();
-                }
-
-                return result;
-
-
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            return null;
-
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        switch (event.getAction()){
+            case MotionEvent.ACTION_DOWN :
+                dX = profileImg.getX() - event.getRawX();
+                dY = profileImg.getY() - event.getRawY();
+                break;
+            case MotionEvent.ACTION_MOVE:
+                profileImg.animate()
+                        .x(event.getRawX() + dX)
+                        .y(event.getRawY() + dY)
+                        .setDuration(2)
+                        .start();
+                break;
+            default:
+                return false;
         }
-
-        @Override
-        protected void onPostExecute(String result) {
-            super.onPostExecute(result);
-
-            try {
-
-                JSONObject jsonObject = new JSONObject(result);
-                String results = jsonObject.getString("results");
-                Log.i("results" , results);
-                JSONArray arr = new JSONArray(results);
-
-
-
-
-                // getting lat & lng from jason
-
-                for(int i=0 ; i<arr.length() ; i++){
-
-                    JSONObject jsonPart = arr.getJSONObject(i);
-                    JSONObject jsonGeometry = jsonPart.getJSONObject("geometry");
-                    JSONObject jsonLocation = jsonGeometry.getJSONObject("location");
-                    String lat = jsonLocation.getString("lat");
-                    String lng = jsonLocation.getString("lng");
-
-
-                      latitude = Double.valueOf(lat);
-                      longitude = Double.valueOf(lng);
-                    Log.i("lat & lng :" , latitude + "  " +longitude);
-
-                    //b3ml kol marra clear lel marker 3shan myb2ash kteer l7d ma a3ml option delete
-
-                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latitude, longitude), 12));
-
-                }
-
-            } catch (JSONException e) {
-                Toast.makeText(getApplicationContext(), "This Place not found or connection lost ..", Toast.LENGTH_SHORT).show();
-                e.printStackTrace();
-            }
-        }
-
-
+        return true;
     }
-
-    }
+}
 
