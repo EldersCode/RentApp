@@ -161,6 +161,7 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void onError(FacebookException error) {
+
                 Toast.makeText(LoginActivity.this, "Can't login with facebook please check internet connection ..", Toast.LENGTH_LONG).show();
             }
 
@@ -231,6 +232,7 @@ public class LoginActivity extends AppCompatActivity {
         FirebaseUser currentUser = mAuth.getCurrentUser();
         mAuth.addAuthStateListener(mAuthListener);
     }
+
 
     @Override
     public void onBackPressed() {

@@ -1,9 +1,145 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.tourism.hesham.rentapp.AdvertiseActivity">
+    <EditText
+        android:id="@+id/user"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/user"/>
 
-</android.support.constraint.ConstraintLayout>
+    <Button
+        android:id="@+id/upload"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/Base.TextAppearance.AppCompat.Button"
+        android:text="@string/retrive"
+        />
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:elevation="8dp"
+        >
+        <HorizontalScrollView
+            android:layout_marginTop="50dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scrollbars="none"
+            >
+
+            <LinearLayout
+                android:scrollbarSize="410dp"
+                android:layout_width="match_parent"
+                android:layout_height="130dp"
+                android:orientation="horizontal">
+
+
+                <ImageView
+                    android:elevation="4dp"
+                    android:id="@+id/img1"
+                    android:background="@drawable/nopic"
+                    android:layout_width="130dp"
+                    android:layout_height="130dp"
+
+                    />
+                <ImageView
+                    android:elevation="8dp"
+                    android:id="@+id/img2"
+                    android:layout_marginLeft="10dp"
+                    android:background="@drawable/nopic"
+                    android:layout_width="130dp"
+                    android:layout_height="130dp"
+
+                    />
+                <ImageView
+                    android:elevation="16dp"
+                    android:id="@+id/img3"
+                    android:layout_marginLeft="10dp"
+                    android:background="@drawable/nopic"
+                    android:layout_width="130dp"
+                    android:layout_height="130dp"
+
+                    />
+            </LinearLayout>
+        </HorizontalScrollView>
+    </FrameLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:elevation="24dp"
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/champers"
+            />
+        <EditText
+            android:id="@+id/chompersNo"
+            android:cursorVisible="false"
+            android:drawableBottom="@color/colorPrimaryDark"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:elevation="24dp"
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/area"
+            />
+        <EditText
+            android:id="@+id/area"
+            android:cursorVisible="false"
+            android:drawableBottom="@color/colorPrimaryDark"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/m2"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:elevation="24dp"
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/hint"
+            />
+
+    </LinearLayout>
+    <EditText
+        android:id="@+id/hint"
+        android:cursorVisible="false"
+        android:drawableBottom="@color/colorPrimaryDark"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:inputType="textAutoCorrect"
+        android:lines="3"
+        android:maxLines="3"
+        />
+    <Button
+        android:id="@+id/submit"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:src="@color/place_autocomplete_search_text"
+        />
+</LinearLayout>

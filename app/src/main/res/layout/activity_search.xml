@@ -24,14 +24,16 @@
         android:textColorHint="#565656"
         android:gravity="center"
         android:layout_centerHorizontal="true" />
+
     <ImageView
+        android:id="@+id/search_img"
         android:layout_width="30dp"
         android:layout_height="30dp"
-        android:background="@mipmap/search"
-        android:layout_marginTop="10dp"
+        android:layout_alignParentStart="true"
         android:layout_marginLeft="6dp"
-        android:id="@+id/search_img"
-        android:layout_alignParentStart="true" />
+        android:layout_marginTop="10dp"
+        android:onClick="findAddress"
+        android:background="@mipmap/search" />
 
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
@@ -42,15 +44,5 @@
         android:scrollbars="vertical"
         />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="21sp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="50dp"
-        android:text="Welcome"
-        android:textColor="#a61010"
-        android:id="@+id/msg"
-        />
 
 </RelativeLayout>
