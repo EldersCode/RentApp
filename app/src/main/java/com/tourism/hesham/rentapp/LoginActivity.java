@@ -233,8 +233,7 @@ public class LoginActivity extends AppCompatActivity {
         mAuth.addAuthStateListener(mAuthListener);
     }
 
-<<<<<<< HEAD
-=======
+
     @Override
     public void onBackPressed() {
         finishAffinity();
@@ -265,6 +264,5 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
->>>>>>> origin/master
 }
 

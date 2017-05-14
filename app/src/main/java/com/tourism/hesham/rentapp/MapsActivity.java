@@ -1,12 +1,9 @@
 package com.tourism.hesham.rentapp;
 
 import android.Manifest;
-<<<<<<< HEAD
 import android.app.Activity;
 import android.content.DialogInterface;
-=======
 import android.animation.Animator;
->>>>>>> origin/master
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -19,22 +16,16 @@ import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-<<<<<<< HEAD
 import android.support.v7.app.AlertDialog;
-=======
->>>>>>> origin/master
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
-<<<<<<< HEAD
 import android.view.WindowManager;
 import android.widget.Button;
-=======
 import android.widget.Button;
 import android.widget.EditText;
->>>>>>> origin/master
 import android.widget.TextView;
 import android.widget.Toast;
 import com.facebook.Profile;
@@ -45,10 +36,8 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
-<<<<<<< HEAD
-=======
+
 import com.google.android.gms.location.places.Places;
->>>>>>> origin/master
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -60,12 +49,10 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.squareup.picasso.Picasso;
-<<<<<<< HEAD
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
 import static com.facebook.FacebookSdk.getApplicationContext;
-=======
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -76,9 +63,6 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import de.hdodenhof.circleimageview.CircleImageView;
-
->>>>>>> origin/master
-
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
@@ -94,11 +78,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private Button navigation_btn;
     private TextView profileName , profileId;
     private CircleImageView profileImg;
-<<<<<<< HEAD
-=======
+
     private EditText search_editText;
 
->>>>>>> origin/master
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -137,8 +119,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         profileName = (TextView)headerView.findViewById(R.id.profile_name);
         profileId = (TextView)headerView.findViewById(R.id.profile_id);
 
-<<<<<<< HEAD
-=======
         //initializing search edit text here
 //        HandleSearchET();
 
@@ -173,7 +153,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 });
             }
         });
->>>>>>> origin/master
 
 
         /*elta3deel ya gama3a ana msh ba5od eldata bta3et el profile mn el login activity ana bstad3y el data mn el profile
@@ -387,7 +366,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         if (id == R.id.nav_location) {
 
         } else if (id == R.id.salama) {
-<<<<<<< HEAD
 //            LayoutInflater inflater = (this).getLayoutInflater();
 //            View dialogLayout = inflater.inflate(R.layout.activity_advertise,
 //                    null);
@@ -398,7 +376,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 //
 //            dialog.show();
             startActivity(new Intent(getApplicationContext() , AdvertiseActivity.class));
-=======
             DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
             drawer.animate().alpha(0.0f).setDuration(1000).setListener(new Animator.AnimatorListener() {
                 @Override
@@ -421,7 +398,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 }
             });
 
->>>>>>> origin/master
 
         } else if (id == R.id.morsy) {
             DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -479,14 +455,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
     }
 
-<<<<<<< HEAD
     @Override
     protected void onStart() {
         super.onStart();
         Profile profile = Profile.getCurrentProfile();
         Log.i("Facebook name" , profile.getName());
     }
-=======
 
     @Override
     public void processFinish(String output) {
@@ -612,13 +586,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
 
         }
->>>>>>> origin/master
 
-
-<<<<<<< HEAD
-}
-=======
 
 }
 
->>>>>>> origin/master
+}
+
