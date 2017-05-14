@@ -1,11 +1,12 @@
 package com.tourism.hesham.rentapp;
 
 import android.Manifest;
+import android.app.Activity;
+import android.content.DialogInterface;
 import android.animation.Animator;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -15,21 +16,27 @@ import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.facebook.Profile;
+import com.facebook.internal.LoginAuthorizationType;
 import com.facebook.login.LoginManager;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+
 import com.google.android.gms.location.places.Places;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -40,7 +47,12 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.squareup.picasso.Picasso;
+
+import de.hdodenhof.circleimageview.CircleImageView;
+
+import static com.facebook.FacebookSdk.getApplicationContext;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -51,8 +63,6 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import de.hdodenhof.circleimageview.CircleImageView;
-
-
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
@@ -60,8 +70,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         ,AsyncResponse,
         NavigationView.OnNavigationItemSelectedListener {
 
-    View headerView;
-    NavigationView navigationView;
     private GoogleMap mMap;
     GoogleApiClient mGoogleApiClient , Geo;
     Location mLastLocation;
@@ -70,6 +78,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private Button navigation_btn;
     private TextView profileName , profileId;
     private CircleImageView profileImg;
+
     private EditText search_editText;
 
 
@@ -100,12 +109,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         });
         // set the navigationView
-         navigationView = (NavigationView) findViewById(R.id.navigation_view);
+        NavigationView navigationView = (NavigationView) findViewById(R.id.navigation_view);
         navigationView.setNavigationItemSelectedListener(this);
 
         //Initiallizing header component
 
-         headerView = navigationView.getHeaderView(0);
+        View headerView = navigationView.getHeaderView(0);
         profileImg = (CircleImageView)headerView.findViewById(R.id.circularImageView);
         profileName = (TextView)headerView.findViewById(R.id.profile_name);
         profileId = (TextView)headerView.findViewById(R.id.profile_id);
@@ -357,6 +366,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         if (id == R.id.nav_location) {
 
         } else if (id == R.id.salama) {
+//            LayoutInflater inflater = (this).getLayoutInflater();
+//            View dialogLayout = inflater.inflate(R.layout.activity_advertise,
+//                    null);
+//            android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
+//            builder.setView(dialogLayout);
+//
+//            android.app.AlertDialog dialog = builder.create();
+//
+//            dialog.show();
+            startActivity(new Intent(getApplicationContext() , AdvertiseActivity.class));
             DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
             drawer.animate().alpha(0.0f).setDuration(1000).setListener(new Animator.AnimatorListener() {
                 @Override
@@ -432,10 +451,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawer(GravityCompat.START);
         } else {
-            finishAffinity();
+            super.onBackPressed();
         }
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Profile profile = Profile.getCurrentProfile();
+        Log.i("Facebook name" , profile.getName());
+    }
 
     @Override
     public void processFinish(String output) {
@@ -562,8 +587,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         }
 
-    }
 
+}
 
 }
 
