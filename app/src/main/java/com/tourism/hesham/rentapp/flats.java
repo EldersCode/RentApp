@@ -4,18 +4,13 @@ package com.tourism.hesham.rentapp;
 
 
 
-import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.AppCompatImageButton;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -24,13 +19,11 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
-public class AdvertiseActivity extends AppCompatActivity {
+public class flats extends AppCompatActivity {
     private Uri uri1;
         private Button retriveImages;
         private EditText user;
@@ -52,17 +45,17 @@ public class AdvertiseActivity extends AppCompatActivity {
         @Override
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
-            setContentView(R.layout.activity_advertise);
+            setContentView(R.layout.flats);
 
             /////////////
-            LayoutInflater inflater = (this).getLayoutInflater();
-            View dialogLayout = inflater.inflate(R.layout.activity_advertise,
-                    null);
-            android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
-            builder.setView(dialogLayout);
-
-            android.app.AlertDialog dialog = builder.create();
-            dialog.show();
+//            LayoutInflater inflater = (this).getLayoutInflater();
+//            View dialogLayout = inflater.inflate(R.layout.flats,
+//                    null);
+//            android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
+//            builder.setView(dialogLayout);
+//
+//            android.app.AlertDialog dialog = builder.create();
+//            dialog.show();
             ////////////////
 
             ////////////////

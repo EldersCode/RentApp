@@ -6,7 +6,8 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.tourism.hesham.rentapp.AdvertiseActivity">
+    android:background="@drawable/flat_activity"
+    tools:context="com.tourism.hesham.rentapp.flats">
     <EditText
         android:id="@+id/user"
         android:layout_width="match_parent"
@@ -15,9 +16,10 @@
 
     <Button
         android:id="@+id/upload"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        style="@style/Base.TextAppearance.AppCompat.Button"
+        android:background="@drawable/orrange_button"
+
+        android:layout_width="100dp"
+        android:layout_height="40dp"
         android:text="@string/retrive"
         />
     <FrameLayout
