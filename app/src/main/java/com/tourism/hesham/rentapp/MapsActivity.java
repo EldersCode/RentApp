@@ -1,8 +1,6 @@
 package com.tourism.hesham.rentapp;
 
 import android.Manifest;
-import android.app.Activity;
-import android.content.DialogInterface;
 import android.animation.Animator;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -17,20 +15,15 @@ import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.facebook.Profile;
-import com.facebook.internal.LoginAuthorizationType;
 import com.facebook.login.LoginManager;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -38,7 +31,6 @@ import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 
-import com.google.android.gms.location.places.Places;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -48,12 +40,10 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.squareup.picasso.Picasso;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-import static com.facebook.FacebookSdk.getApplicationContext;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -63,7 +53,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import de.hdodenhof.circleimageview.CircleImageView;
+
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
@@ -368,7 +358,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         } else if (id == R.id.salama) {
 //            LayoutInflater inflater = (this).getLayoutInflater();
-//            View dialogLayout = inflater.inflate(R.layout.activity_advertise,
+//            View dialogLayout = inflater.inflate(R.layout.flats,
 //                    null);
 //            android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
 //            builder.setView(dialogLayout);
@@ -386,7 +376,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                 @Override
                 public void onAnimationEnd(Animator animation) {
-                    startActivity(new Intent(getApplicationContext() , AdvertiseActivity.class));                }
+                    startActivity(new Intent(getApplicationContext() , advertises.class));                }
 
                 @Override
                 public void onAnimationCancel(Animator animation) {
