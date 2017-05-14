@@ -62,7 +62,6 @@ public class AdvertiseActivity extends AppCompatActivity {
             builder.setView(dialogLayout);
 
             android.app.AlertDialog dialog = builder.create();
-
             dialog.show();
             ////////////////
 
@@ -205,4 +204,10 @@ public class AdvertiseActivity extends AppCompatActivity {
 
             }
         }
+
+    @Override
+    public void onBackPressed() {
+        startActivity(new Intent(getApplicationContext(),MapsActivity.class));
+    }
+
     }
