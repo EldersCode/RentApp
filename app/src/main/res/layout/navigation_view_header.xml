@@ -1,78 +1,91 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:gravity="center_horizontal"
-    android:background="@drawable/header_nav_bg"
-    android:orientation="vertical"
-    android:paddingBottom="16dp"
-    android:paddingLeft="16dp"
-    android:paddingRight="16dp"
-    android:paddingTop="16dp"
+
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
-    <EditText
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:inputType="text"
-        android:maxLines="1"
-        android:paddingLeft="30dp"
-        android:textColor="@android:color/black"
-        android:scrollHorizontally="true"
-        android:ellipsize="end"
-        android:textSize="21sp"
-        android:id="@+id/search_editText"
-        android:hint="@string/search_city"
-        android:textColorHint="#565656"
-        android:gravity="center"
-        android:layout_centerHorizontal="true" />
-    <ImageView
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:background="@mipmap/search"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="6dp"
-        android:id="@+id/search_img"
-        android:layout_alignParentStart="true" />
-
-    <android.support.v7.widget.RecyclerView
-        android:layout_width="match_parent"
-        android:layout_height="190dp"
-        android:id="@+id/recyclerId"
-        android:layout_below="@id/search_editText"
-        android:layout_marginTop="10dp"
-        android:scrollbars="vertical"
-        />
+        android:layout_height="280dp"
+        android:background="@drawable/header_nav_bg"
+        android:paddingBottom="16dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingTop="16dp"
+        android:id="@+id/header0"
+        >
 
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/circularImageView"
-        android:layout_width="100dp"
-        android:layout_marginTop="70dp"
-        android:layout_height="100dp"
-        android:layout_gravity="center_horizontal"
-        app:civ_border_width="2dp"
-        app:civ_border_color="#FF000000"
-         />
 
-    <TextView
-        android:id="@+id/profile_name"
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/circularImageView"
+            android:layout_width="100dp"
+            android:layout_marginTop="50dp"
+            android:layout_height="100dp"
+            android:layout_centerHorizontal="true"
+            app:civ_border_width="2dp"
+            app:civ_border_color="#FF000000"
+            />
+
+        <TextView
+            android:id="@+id/profile_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:layout_marginTop="10dp"
+            android:paddingTop="16dp"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/circularImageView"
+            android:textColor="@android:color/white"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+
+        <TextView
+            android:id="@+id/profile_id"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="16dp"
+            android:gravity="center_horizontal"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/profile_name"
+            android:textColor="@android:color/white"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="16dp"
-        android:gravity="center_horizontal"
-        android:textColor="@android:color/white"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+        android:layout_below="@id/header0"
+        android:layout_marginTop="20dp"
+        >
 
-    <TextView
-        android:id="@+id/profile_id"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingTop="16dp"
-        android:gravity="center_horizontal"
-        android:textColor="@android:color/white"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:focusable="false"
+            android:drawableLeft="@mipmap/search"
+            android:inputType="text"
+            android:maxLines="1"
+            android:paddingLeft="40dp"
+            android:paddingRight="55dp"
+            android:textColor="@android:color/black"
+            android:scrollHorizontally="true"
+            android:ellipsize="end"
+            android:textSize="21sp"
+            android:background="@drawable/edit_text_bg"
+            android:id="@+id/search_editText"
+            android:hint="@string/search_city"
+            android:textColorHint="#565656"
+            android:gravity="center"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            />
 
-</LinearLayout>
+
+    </RelativeLayout>
+
+
+</RelativeLayout>

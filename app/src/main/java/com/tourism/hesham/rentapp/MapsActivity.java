@@ -1,8 +1,12 @@
 package com.tourism.hesham.rentapp;
 
 import android.Manifest;
+<<<<<<< HEAD
 import android.app.Activity;
 import android.content.DialogInterface;
+=======
+import android.animation.Animator;
+>>>>>>> origin/master
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -15,17 +19,24 @@ import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+<<<<<<< HEAD
 import android.support.v7.app.AlertDialog;
+=======
+>>>>>>> origin/master
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+<<<<<<< HEAD
 import android.view.WindowManager;
 import android.widget.Button;
+=======
+import android.widget.Button;
+import android.widget.EditText;
+>>>>>>> origin/master
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.facebook.Profile;
 import com.facebook.internal.LoginAuthorizationType;
 import com.facebook.login.LoginManager;
@@ -34,6 +45,10 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+<<<<<<< HEAD
+=======
+import com.google.android.gms.location.places.Places;
+>>>>>>> origin/master
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -45,30 +60,52 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.squareup.picasso.Picasso;
+<<<<<<< HEAD
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
 import static com.facebook.FacebookSdk.getApplicationContext;
+=======
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import de.hdodenhof.circleimageview.CircleImageView;
+
+>>>>>>> origin/master
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
-        LocationListener,
+        LocationListener
+        ,AsyncResponse,
         NavigationView.OnNavigationItemSelectedListener {
 
     private GoogleMap mMap;
-    GoogleApiClient mGoogleApiClient;
+    GoogleApiClient mGoogleApiClient , Geo;
     Location mLastLocation;
     Marker mCurrLocationMarker;
     LocationRequest mLocationRequest;
     private Button navigation_btn;
     private TextView profileName , profileId;
     private CircleImageView profileImg;
+<<<<<<< HEAD
+=======
+    private EditText search_editText;
+
+>>>>>>> origin/master
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+        buildGoogleApiClient();
+
 
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             checkLocationPermission();
@@ -77,6 +114,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
 
 
         navigation_btn = (Button) findViewById(R.id.navigation_btn);
@@ -99,6 +137,43 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         profileName = (TextView)headerView.findViewById(R.id.profile_name);
         profileId = (TextView)headerView.findViewById(R.id.profile_id);
 
+<<<<<<< HEAD
+=======
+        //initializing search edit text here
+//        HandleSearchET();
+
+
+        search_editText = (EditText)headerView.findViewById(R.id.search_editText);
+
+        search_editText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+                drawer.animate().alpha(0.0f).setDuration(1000).setListener(new Animator.AnimatorListener() {
+                    @Override
+                    public void onAnimationStart(Animator animation) {
+
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        startActivity(new Intent(getApplicationContext(),SearchActivity.class));
+                    }
+
+                    @Override
+                    public void onAnimationCancel(Animator animation) {
+
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animator animation) {
+
+                    }
+                });
+            }
+        });
+>>>>>>> origin/master
 
 
         /*elta3deel ya gama3a ana msh ba5od eldata bta3et el profile mn el login activity ana bstad3y el data mn el profile
@@ -118,8 +193,26 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
 
 
+        try {
+            Bundle bundle = getIntent().getExtras();
+            String address = bundle.getString("httpWeb");
+            Log.i("MainActivity encoded", address);
+
+            // we open connection by the DownloadTask Class
+            DownloadTask task = new DownloadTask();
+            // we used the interface to get the data we have after the onPostExecute method finished to use it ..
+            task.delegate = this;
+            task.execute(address);
+
+        }catch (Exception exp){
+            //   Toast.makeText(this, "This Place not found or connection lost ..", Toast.LENGTH_SHORT).show();
+
+        }
 
     }
+
+
+
 
 
     /**
@@ -149,6 +242,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             buildGoogleApiClient();
             mMap.setMyLocationEnabled(true);
         }
+
+
+        //to animate camera on the last location when gps closed (it needs database)
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED  &&  mLastLocation != null) {
+            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(
+                    new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude()), 12));
+        }
     }
 
     protected synchronized void buildGoogleApiClient() {
@@ -169,7 +271,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mLocationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.ACCESS_FINE_LOCATION)
-                == PackageManager.PERMISSION_GRANTED) {
+                == PackageManager.PERMISSION_GRANTED && mGoogleApiClient.isConnected()) {
             LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
         }
 
@@ -204,7 +306,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         if (mGoogleApiClient != null) {
             LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
         }
-
     }
 
     @Override
@@ -286,6 +387,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         if (id == R.id.nav_location) {
 
         } else if (id == R.id.salama) {
+<<<<<<< HEAD
 //            LayoutInflater inflater = (this).getLayoutInflater();
 //            View dialogLayout = inflater.inflate(R.layout.activity_advertise,
 //                    null);
@@ -296,9 +398,55 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 //
 //            dialog.show();
             startActivity(new Intent(getApplicationContext() , AdvertiseActivity.class));
+=======
+            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+            drawer.animate().alpha(0.0f).setDuration(1000).setListener(new Animator.AnimatorListener() {
+                @Override
+                public void onAnimationStart(Animator animation) {
+
+                }
+
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    startActivity(new Intent(getApplicationContext() , AdvertiseActivity.class));                }
+
+                @Override
+                public void onAnimationCancel(Animator animation) {
+
+                }
+
+                @Override
+                public void onAnimationRepeat(Animator animation) {
+
+                }
+            });
+
+>>>>>>> origin/master
 
         } else if (id == R.id.morsy) {
-            startActivity(new Intent(getApplicationContext(), EventsActivity.class));
+            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+            drawer.animate().alpha(0.0f).setDuration(1000).setListener(new Animator.AnimatorListener() {
+                @Override
+                public void onAnimationStart(Animator animation) {
+
+                }
+
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    startActivity(new Intent(getApplicationContext(), EventsActivity.class));
+                }
+                @Override
+                public void onAnimationCancel(Animator animation) {
+
+                }
+
+                @Override
+                public void onAnimationRepeat(Animator animation) {
+
+                }
+            });
+
+
         } else if (id == R.id.logout){
 
             //n5ally el info ely fl nav header teb2a empty ..
@@ -331,12 +479,146 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
     }
 
+<<<<<<< HEAD
     @Override
     protected void onStart() {
         super.onStart();
         Profile profile = Profile.getCurrentProfile();
         Log.i("Facebook name" , profile.getName());
     }
+=======
 
+    @Override
+    public void processFinish(String output) {
+        Log.i("output" , output);
+
+        try {
+
+            JSONObject jsonObject = new JSONObject(output);
+            String results = jsonObject.getString("results");
+            Log.i("results" , results);
+            JSONArray arr = new JSONArray(results);
+
+
+
+
+            // getting lat & lng from jason
+
+            for(int i=0 ; i<arr.length() ; i++){
+
+                JSONObject jsonPart = arr.getJSONObject(i);
+                JSONObject jsonGeometry = jsonPart.getJSONObject("geometry");
+                JSONObject jsonLocation = jsonGeometry.getJSONObject("location");
+                String lat = jsonLocation.getString("lat");
+                String lng = jsonLocation.getString("lng");
+
+
+                Double  latitude = Double.valueOf(lat);
+                Double  longitude = Double.valueOf(lng);
+                Log.i("lat & lng :" , latitude + "  " +longitude);
+
+                //b7rk el camera 3al makan fl map
+                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latitude, longitude), 7));
+
+            }
+
+        } catch (JSONException e) {
+            Toast.makeText(this, "This Place not found or connection lost ..", Toast.LENGTH_SHORT).show();
+            e.printStackTrace();
+        }
+    }
+
+    //here the download task class to handle retrieving data from api
+
+     private  class DownloadTask extends AsyncTask<String , Void , String> {
+
+        Double latitude;
+        Double longitude;
+
+        public AsyncResponse delegate = null;
+
+
+
+
+        @Override
+        protected String doInBackground(String... urls) {
+
+            String result = "";
+            URL url;
+            HttpURLConnection connection;
+
+            try {
+
+                url = new URL(urls[0]);
+                connection = (HttpURLConnection) url.openConnection();
+                InputStream in = connection.getInputStream();
+                InputStreamReader reader = new InputStreamReader(in);
+
+
+                int data = reader.read();
+                while (data != -1){
+
+                    char current = (char) data;
+                    result += current;
+                    data = reader.read();
+                }
+
+                return result;
+
+
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            return null;
+
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+
+            try {
+
+                JSONObject jsonObject = new JSONObject(result);
+                String results = jsonObject.getString("results");
+                Log.i("results" , results);
+                JSONArray arr = new JSONArray(results);
+
+                for(int i=0 ; i<arr.length() ; i++){
+
+                    JSONObject jsonPart = arr.getJSONObject(i);
+                    JSONObject jsonGeometry = jsonPart.getJSONObject("geometry");
+                    JSONObject jsonLocation = jsonGeometry.getJSONObject("location");
+                    String lat = jsonLocation.getString("lat");
+                    String lng = jsonLocation.getString("lng");
+
+                    latitude = Double.valueOf(lat);
+                    longitude = Double.valueOf(lng);
+                    Log.i("lat & lng :" , latitude + "  " +longitude);
+
+
+                }
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+
+
+            delegate.processFinish(result);
+
+
+        }
+>>>>>>> origin/master
+
+
+<<<<<<< HEAD
+}
+=======
 
 }
+
+>>>>>>> origin/master
