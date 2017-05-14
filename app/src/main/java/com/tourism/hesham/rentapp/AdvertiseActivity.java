@@ -62,7 +62,6 @@ public class AdvertiseActivity extends AppCompatActivity {
             builder.setView(dialogLayout);
 
             android.app.AlertDialog dialog = builder.create();
-
             dialog.show();
             ////////////////
 
