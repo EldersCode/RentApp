@@ -69,7 +69,8 @@
             android:drawableLeft="@mipmap/search"
             android:inputType="text"
             android:maxLines="1"
-            android:paddingLeft="30dp"
+            android:paddingLeft="40dp"
+            android:paddingRight="55dp"
             android:textColor="@android:color/black"
             android:scrollHorizontally="true"
             android:ellipsize="end"
@@ -85,7 +86,6 @@
 
 
     </RelativeLayout>
-
 
 
 </RelativeLayout>
