@@ -376,7 +376,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 //            android.app.AlertDialog dialog = builder.create();
 //
 //            dialog.show();
-            startActivity(new Intent(getApplicationContext() , AdvertiseActivity.class));
+            
             DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
             drawer.animate().alpha(0.0f).setDuration(1000).setListener(new Animator.AnimatorListener() {
                 @Override
