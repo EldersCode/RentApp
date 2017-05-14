@@ -74,7 +74,7 @@
             android:textColor="@android:color/black"
             android:scrollHorizontally="true"
             android:ellipsize="end"
-            android:textSize="21sp"
+            android:textSize="16sp"
             android:background="@drawable/edit_text_bg"
             android:id="@+id/search_editText"
             android:hint="@string/search_city"
