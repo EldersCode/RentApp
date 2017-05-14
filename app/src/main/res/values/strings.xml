@@ -11,4 +11,10 @@
     <string name="event_type_Text">Event Type </string>
     <string name="event_available_Tickets_Text">#Tickets Available </string>
     <string name="search_city">search ..</string>
+    <string name="user">user</string>
+    <string name="retrive">retriev</string>
+    <string name="champers">chompers</string>
+    <string name="area">area</string>
+    <string name="m2">m2</string>
+    <string name="hint">hint</string>
 </resources>
