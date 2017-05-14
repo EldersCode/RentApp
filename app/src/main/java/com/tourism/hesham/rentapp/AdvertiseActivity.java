@@ -205,4 +205,10 @@ public class AdvertiseActivity extends AppCompatActivity {
 
             }
         }
+
+    @Override
+    public void onBackPressed() {
+        startActivity(new Intent(getApplicationContext(),MapsActivity.class));
+    }
+
     }
