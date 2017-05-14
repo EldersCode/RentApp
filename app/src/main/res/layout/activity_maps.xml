@@ -24,23 +24,25 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             >
-            <Button
+            <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="70dp"
                 android:layout_alignParentBottom="true"
                 android:background="#4285dd"
-                android:elevation="24dp"
-                android:clickable="false"
+                android:elevation="1dp"
+                android:clickable="true"
                 />
+
             <Button
                 android:layout_width="100dp"
                 android:layout_height="70dp"
+                android:background="#ff50"
                 android:layout_alignParentBottom="true"
-                android:text="here"
+                android:text="Menu"
                 android:id="@+id/navigation_btn"
+                android:elevation="24dp"
+                android:textAllCaps="false"
                 />
-
-
 
         </RelativeLayout>
 
