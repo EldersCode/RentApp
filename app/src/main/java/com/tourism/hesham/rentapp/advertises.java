@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -34,13 +35,12 @@ private de.hdodenhof.circleimageview.CircleImageView flats;
     private ImageView imageView1;
     private ImageView imageView2;
     private ImageView imageView3;
-
-//private DatabaseReference firebaseDatabase;
-
+    private AlertDialog.Builder builder;
     private EditText chompersNo;
     private EditText hint;
     private EditText area;
     private Button submit;
+    private  View view;
     private StorageReference storageReference;
     private static final int GALARY_INTENT=2;
     private int i=0;
@@ -56,65 +56,99 @@ private de.hdodenhof.circleimageview.CircleImageView flats;
 
         flats=(de.hdodenhof.circleimageview.CircleImageView) findViewById(R.id.flats);
 
+        //////////////////////////// flat dialog components
+       view = LayoutInflater.from(advertises.this).inflate(R.layout.flats,null,false);
+        imageView1 = (ImageView) view.findViewById(R.id.img1);
+        imageView2 = (ImageView) view.findViewById(R.id.img2);
+        imageView3 = (ImageView) view.findViewById(R.id.img3);
+
+        storageReference= FirebaseStorage.getInstance().getReference();
+
+
+        imageView1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(Intent.ACTION_PICK);
+                intent.setType("image/*");
+                startActivityForResult(intent,GALARY_INTENT);
+                i=1;
+
+            }
+        });
+        imageView2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent intent=new Intent(Intent.ACTION_PICK);
+                intent.setType("image/*");
+                startActivityForResult(intent,GALARY_INTENT);
+                i=2;
+
+            }
+        });
+        imageView3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(Intent.ACTION_PICK);
+                intent.setType("image/*");
+                startActivityForResult(intent,GALARY_INTENT);
+                i=3;
+            }
+        });
+        builder = new AlertDialog.Builder(advertises.this);
+        builder.setView(view);
+        ///////////////////////////
+
         flats.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                final View view = LayoutInflater.from(advertises.this).inflate(R.layout.flats,null);
-                imageView1 = (ImageView) view.findViewById(R.id.img1);
-                imageView2 = (ImageView) view.findViewById(R.id.img2);
-                imageView3 = (ImageView) view.findViewById(R.id.img3);
-
-                storageReference= FirebaseStorage.getInstance().getReference();
 
 
-                imageView1.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent intent=new Intent(Intent.ACTION_PICK);
-                        intent.setType("image/*");
-                        startActivityForResult(intent,GALARY_INTENT);
-                        i=1;
-
-                    }
-                });
-                imageView2.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-
-                        Intent intent=new Intent(Intent.ACTION_PICK);
-                        intent.setType("image/*");
-
-//
-                        startActivityForResult(intent,GALARY_INTENT);
-                        i=2;
-
-                    }
-                });
-                imageView3.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent intent=new Intent(Intent.ACTION_PICK);
-                        intent.setType("image/*");
-                        startActivityForResult(intent,GALARY_INTENT);
-                        i=3;
-                    }
-                });
-                AlertDialog.Builder builder = new AlertDialog.Builder(advertises.this);
-                builder.setView(view);
-builder.setPositiveButton("submit", new DialogInterface.OnClickListener() {
+builder.setCancelable(false).setNegativeButton("cancel", new DialogInterface.OnClickListener() {
     @Override
     public void onClick(DialogInterface dialog, int which) {
-submitData();
+        if (view != null) {
+            ViewGroup parentViewGroup = (ViewGroup) view.getParent();
+
+            if (parentViewGroup != null) {
+                parentViewGroup.removeAllViews();
+            }
+        }
+        dialog.dismiss();
+        dialog.cancel();
+    }
+}).setPositiveButton("submit", new DialogInterface.OnClickListener() {
+    @Override
+    public void onClick(DialogInterface dialog, int which) {
+//here i should send data for flat
+        submitData();
+        if (view != null) {
+            ViewGroup parentViewGroup = (ViewGroup) view.getParent();
+            if (parentViewGroup != null) {
+                parentViewGroup.removeAllViews();
+            }
+        }
+        dialog.dismiss();
+dialog.cancel();
     }
 });
-                android.app.AlertDialog dialog = builder.create();
-                dialog.show();
-                ////////////////
-            }});
+                try {
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
+                }catch (Exception e)
+                {
+
+                    Log.e("alert error", String.valueOf(e));
+                }
+                }});
 
     }
-//////////
+
+
+
+
+
 
 @Override
 protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -141,7 +175,9 @@ protected void onActivityResult(int requestCode, int resultCode, Intent data) {
             filepath.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-
+clearimages(imageView1);
+clearimages(imageView2);
+clearimages(imageView3);
 //                    Toast.makeText(getApplicationContext(), "done", Toast.LENGTH_SHORT).show();
 progressDialog.cancel();
 
@@ -168,6 +204,11 @@ private void submitData(){
 
 
 }
+private void clearimages(ImageView imageView){
+imageView.setImageURI(null);
+
+}
+
     @Override
     public void onBackPressed() {
 startActivity(new Intent(getApplicationContext(),MapsActivity.class));
