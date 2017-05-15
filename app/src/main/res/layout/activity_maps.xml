@@ -26,17 +26,18 @@
             >
             <ImageView
                 android:layout_width="match_parent"
-                android:layout_height="70dp"
+                android:layout_height="60dp"
                 android:layout_alignParentBottom="true"
-                android:background="#4285dd"
+                android:background="@color/colorAccent"
                 android:elevation="1dp"
+
                 android:clickable="true"
                 />
 
             <Button
                 android:layout_width="100dp"
-                android:layout_height="70dp"
-                android:background="#ff50"
+                android:layout_height="60dp"
+                android:background="@android:color/holo_orange_dark"
                 android:layout_alignParentBottom="true"
                 android:text="Menu"
                 android:id="@+id/navigation_btn"
