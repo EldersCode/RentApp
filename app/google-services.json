@@ -59,6 +59,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "898841074045-bftsn5d8n8r9ju4vuce133modar4bsre.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.tourism.hesham.rentapp",
+            "certificate_hash": "c3350e4cff9dac6e240f34cf356707c742862238"
+          }
+        },
+        {
           "client_id": "898841074045-k1ekkuk7vu1qr73me7onj164uvtdmbjb.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
