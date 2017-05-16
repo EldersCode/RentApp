@@ -1,6 +1,5 @@
 package com.tourism.hesham.rentapp;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
@@ -21,7 +20,6 @@ import android.widget.Toast;
 import com.facebook.Profile;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -31,7 +29,6 @@ private de.hdodenhof.circleimageview.CircleImageView flats;
     //////////////
     private Button retriveImages;
     private EditText user;
-
     private ImageView imageView1;
     private ImageView imageView2;
     private ImageView imageView3;
@@ -103,44 +100,48 @@ private de.hdodenhof.circleimageview.CircleImageView flats;
             @Override
             public void onClick(View v) {
 
-
-
-builder.setCancelable(false).setNegativeButton("cancel", new DialogInterface.OnClickListener() {
-    @Override
-    public void onClick(DialogInterface dialog, int which) {
-        if (view != null) {
-            ViewGroup parentViewGroup = (ViewGroup) view.getParent();
-
-            if (parentViewGroup != null) {
-                parentViewGroup.removeAllViews();
-            }
-        }
-        dialog.dismiss();
-        dialog.cancel();
-    }
-}).setPositiveButton("submit", new DialogInterface.OnClickListener() {
-    @Override
-    public void onClick(DialogInterface dialog, int which) {
-//here i should send data for flat
-        submitData();
-        if (view != null) {
-            ViewGroup parentViewGroup = (ViewGroup) view.getParent();
-            if (parentViewGroup != null) {
-                parentViewGroup.removeAllViews();
-            }
-        }
-        dialog.dismiss();
-dialog.cancel();
-    }
-});
-                try {
-                    AlertDialog dialog = builder.create();
-                    dialog.show();
-                }catch (Exception e)
-                {
-
-                    Log.e("alert error", String.valueOf(e));
-                }
+Intent intent=new Intent(advertises.this,flats.class);
+startActivity(intent);
+//     builder.setCancelable(false).setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+//    @Override
+//    public void onClick(DialogInterface dialog, int which) {
+//        if (view != null) {
+//            ViewGroup parentViewGroup = (ViewGroup) view.getParent();
+//
+//            if (parentViewGroup != null) {
+//                parentViewGroup.removeAllViews();
+//            }
+//        }
+//        dialog.dismiss();
+//        dialog.cancel();
+//    }
+//}).setPositiveButton("submit", new DialogInterface.OnClickListener() {
+//    @Override
+//    public void onClick(DialogInterface dialog, int which) {
+////here i should send data for flat
+//        setLocation();
+//        if (view != null) {
+//            clearimages(imageView1);
+//            clearimages(imageView2);
+//            clearimages(imageView3);
+//            ViewGroup parentViewGroup = (ViewGroup) view.getParent();
+//
+//            if (parentViewGroup != null) {
+//                parentViewGroup.removeAllViews();
+//            }
+//        }
+//        dialog.dismiss();
+//dialog.cancel();
+//    }
+//});
+//                try {
+//                    AlertDialog dialog = builder.create();
+//                    dialog.show();
+//                }catch (Exception e)
+//                {
+//
+//                    Log.e("alert error", String.valueOf(e));
+//                }
                 }});
 
     }
@@ -150,64 +151,62 @@ dialog.cancel();
 
 
 
-@Override
-protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-    super.onActivityResult(requestCode, resultCode, data);
-    if(requestCode== GALARY_INTENT && resultCode==RESULT_OK ) {
-//                //to show images on image view we set after selecting image to upload
-        final Uri uri = data.getData();
-        final ProgressDialog progressDialog = new ProgressDialog(advertises.this);
-        progressDialog.show();
-        switch (i) {
-            case 1:
-                imageView1.setImageURI(uri);
+//@Override
+//protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//    super.onActivityResult(requestCode, resultCode, data);
+//    if(requestCode== GALARY_INTENT && resultCode==RESULT_OK ) {
+////                //to show images on image view we set after selecting image to upload
+//        final Uri uri = data.getData();
+//        final ProgressDialog progressDialog = new ProgressDialog(advertises.this);
+//        progressDialog.show();
+//        switch (i) {
+//            case 1:
+//                imageView1.setImageURI(uri);
+//
+//                break;
+//            case 2:
+//                imageView2.setImageURI(uri);
+//                break;
+//            case 3:
+//                imageView3.setImageURI(uri);
+//                break;
+//        }
+//            profile = Profile.getCurrentProfile();
+//            StorageReference filepath = storageReference.child("flats").child("profileid"+profile.getId()+i);
+//            filepath.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+//                @Override
+//                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+//
+////                    Toast.makeText(getApplicationContext(), "done", Toast.LENGTH_SHORT).show();
+//progressDialog.cancel();
+//
+//                }
+//            }).addOnFailureListener(new OnFailureListener() {
+//                @Override
+//                public void onFailure(@NonNull Exception e) {
+//                    Log.e("eeeee", String.valueOf(e));
+//                    progressDialog.cancel();
+//                    Toast.makeText(getApplicationContext(), "fail", Toast.LENGTH_SHORT).show();
+//
+//                }
+//            });
+//
+//    }
+////        //after selecting flat image send it to storage database
 
-                break;
-            case 2:
-                imageView2.setImageURI(uri);
-                break;
-            case 3:
-                imageView3.setImageURI(uri);
-                break;
-        }
-            profile = Profile.getCurrentProfile();
-            StorageReference filepath = storageReference.child("flats").child("profileid"+profile.getId()+i);
-            filepath.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-clearimages(imageView1);
-clearimages(imageView2);
-clearimages(imageView3);
-//                    Toast.makeText(getApplicationContext(), "done", Toast.LENGTH_SHORT).show();
-progressDialog.cancel();
-
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    Log.e("eeeee", String.valueOf(e));
-                    progressDialog.cancel();
-                    Toast.makeText(getApplicationContext(), "fail", Toast.LENGTH_SHORT).show();
-
-                }
-            });
-
-    }
-//        //after selecting flat image send it to storage database
-
-}
-private void submitData(){
-
-
-
-
-
-
-}
-private void clearimages(ImageView imageView){
-imageView.setImageURI(null);
-
-}
+//}
+//private void setLocation(){
+//
+//
+//
+//
+//
+//
+//}
+//private void clearimages(ImageView imageView){
+//imageView.setImageURI(null);
+//
+//}
 
     @Override
     public void onBackPressed() {

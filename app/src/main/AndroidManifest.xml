@@ -67,7 +67,10 @@
             </intent-filter>
         </activity>
         <activity android:name=".SearchActivity" />
-        <activity android:name=".advertises"></activity>
+        <activity android:name=".advertises" />
+        <activity
+            android:name=".LocateOnMap"
+            android:label="@string/title_activity_locate_on_map"></activity>
     </application>
 
 </manifest>

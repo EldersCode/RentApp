@@ -4,24 +4,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
+
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/flat_activity"
+    android:background="@color/colorAccent"
+
     tools:context="com.tourism.hesham.rentapp.flats">
-    <EditText
-        android:id="@+id/user"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/user"/>
 
-    <Button
-        android:id="@+id/upload"
-        android:background="@drawable/orrange_button"
 
-        android:layout_width="100dp"
-        android:layout_height="40dp"
-        android:text="@string/retrive"
-        />
+
     <FrameLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -36,7 +27,7 @@
 
             <LinearLayout
                 android:scrollbarSize="410dp"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="130dp"
                 android:orientation="horizontal">
 
@@ -122,6 +113,7 @@
         android:elevation="24dp"
         >
         <TextView
+
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/hint"
@@ -129,19 +121,27 @@
 
     </LinearLayout>
     <EditText
+
         android:id="@+id/hint"
         android:cursorVisible="false"
         android:drawableBottom="@color/colorPrimaryDark"
+        android:background="@color/cardview_light_background"
+        android:fadingEdge="horizontal"
         android:layout_width="match_parent"
         android:layout_height="100dp"
         android:inputType="textAutoCorrect"
         android:lines="3"
+        android:minLines="3"
         android:maxLines="3"
         />
-    <Button
-        android:id="@+id/submit"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:src="@color/place_autocomplete_search_text"
-        />
+<Button
+
+    android:id="@+id/locateFlat"
+    android:clickable="true"
+    style="@style/Base.Widget.AppCompat.Button"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/orrange_button"
+    android:text="set my flat location"
+    />
 </LinearLayout>
