@@ -5,6 +5,7 @@ package com.tourism.hesham.rentapp;
 
 
 import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.annotation.NonNull;
@@ -12,6 +13,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -52,12 +54,28 @@ public class flats extends AppCompatActivity {
             view = LayoutInflater.from(flats.this).inflate(R.layout.activity_locate_on_map,null,false);
 
             builder = new AlertDialog.Builder(flats.this);
+            builder.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    if (view != null) {
+
+            ViewGroup parentViewGroup = (ViewGroup) view.getParent();
+
+            if (parentViewGroup != null) {
+                parentViewGroup.removeAllViews();
+            }
+        }
+        dialog.dismiss();
+                }
+            });
             builder.setView(view);
             locateFlat=(Button) findViewById(R.id.locateFlat);
             locateFlat.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+
                     AlertDialog dialog = builder.create();
+
                     dialog.show();
                 }
             });
@@ -66,6 +84,7 @@ public class flats extends AppCompatActivity {
 //            LayoutInflater inflater = (this).getLayoutInflater();
 //            View dialogLayout = inflater.inflate(R.layout.flats,
 //                    null);
+
 //            android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
 //            builder.setView(dialogLayout);
 //
@@ -87,11 +106,6 @@ public class flats extends AppCompatActivity {
             imageView1 = (ImageView) findViewById(R.id.img1);
             imageView2 = (ImageView) findViewById(R.id.img2);
             imageView3 = (ImageView) findViewById(R.id.img3);
-
-            chompersNo=(EditText)findViewById(R.id.chompersNo);
-            hint=(EditText)findViewById(R.id.hint);
-            area=(EditText)findViewById(R.id.area);
-
 
             imageView1.setOnClickListener(new View.OnClickListener() {
                 @Override

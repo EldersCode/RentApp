@@ -135,8 +135,7 @@ startActivity(intent);
 //    }
 //});
 //                try {
-//                    AlertDialog dialog = builder.create();
-//                    dialog.show();
+//                    `
 //                }catch (Exception e)
 //                {
 //

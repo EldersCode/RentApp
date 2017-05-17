@@ -1,23 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
-
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorAccent"
-
+android:orientation="vertical"
     tools:context="com.tourism.hesham.rentapp.flats">
 
-
-
-    <FrameLayout
+    <LinearLayout
+        android:orientation="vertical"
+        android:scrollbarAlwaysDrawVerticalTrack="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:elevation="8dp"
-        >
+        android:background="@color/colorAccent"
+
+        tools:context="com.tourism.hesham.rentapp.flats"
+        android:id="@+id/linearLayout">
+
+
+
+
         <HorizontalScrollView
             android:layout_marginTop="50dp"
             android:layout_width="match_parent"
@@ -60,88 +64,28 @@
                     />
             </LinearLayout>
         </HorizontalScrollView>
-    </FrameLayout>
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:elevation="24dp"
-        >
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/champers"
-            />
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
         <EditText
-            android:id="@+id/chompersNo"
-            android:cursorVisible="false"
-            android:drawableBottom="@color/colorPrimaryDark"
-            android:layout_width="30dp"
-            android:layout_height="wrap_content"
-            android:inputType="number"
-            />
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:elevation="24dp"
-        >
-        <TextView
+            android:id="@+id/noOfRooms"
+            android:hint="@string/noOfRooms"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/area"
             />
-        <EditText
-            android:id="@+id/area"
-            android:cursorVisible="false"
-            android:drawableBottom="@color/colorPrimaryDark"
-            android:layout_width="50dp"
-            android:layout_height="wrap_content"
-            android:inputType="number"
-            />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/m2"/>
     </LinearLayout>
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:elevation="24dp"
-        >
-        <TextView
-
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/hint"
-            />
-
-    </LinearLayout>
-    <EditText
-
-        android:id="@+id/hint"
-        android:cursorVisible="false"
-        android:drawableBottom="@color/colorPrimaryDark"
-        android:background="@color/cardview_light_background"
-        android:fadingEdge="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:inputType="textAutoCorrect"
-        android:lines="3"
-        android:minLines="3"
-        android:maxLines="3"
-        />
+</LinearLayout>
 <Button
 
+    app:elevation="58dp"
     android:id="@+id/locateFlat"
     android:clickable="true"
-    style="@style/Base.Widget.AppCompat.Button"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
+    android:layout_height="70dp"
+    android:shadowColor="@color/cardview_shadow_end_color"
     android:background="@drawable/orrange_button"
     android:text="set my flat location"
+    android:layout_alignParentBottom="true"
     />
-</LinearLayout>
+</RelativeLayout>
