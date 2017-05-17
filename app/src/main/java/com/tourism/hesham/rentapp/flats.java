@@ -8,7 +8,6 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -19,9 +18,9 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -34,11 +33,11 @@ public class flats extends AppCompatActivity {
         private ImageView imageView1;
         private ImageView imageView2;
         private ImageView imageView3;
-
+private DatabaseReference firebaseDatabase;
     private AlertDialog.Builder builder;
 
 //private DatabaseReference firebaseDatabase;
-
+private FirebaseDatabase database;
         private EditText chompersNo;
         private EditText hint;
         private EditText area;
@@ -73,7 +72,10 @@ public class flats extends AppCompatActivity {
             locateFlat.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+        database = FirebaseDatabase.getInstance();
+                    DatabaseReference myRef = database.getReference("countries");
 
+                    myRef.setValue("Hello, World!");
                     AlertDialog dialog = builder.create();
 
                     dialog.show();
