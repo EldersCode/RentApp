@@ -8,7 +8,9 @@
     android:background="@color/colorAccent"
 android:orientation="vertical"
     tools:context="com.tourism.hesham.rentapp.flats">
-
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
     <LinearLayout
         android:orientation="vertical"
         android:scrollbarAlwaysDrawVerticalTrack="true"
@@ -154,7 +156,14 @@ android:orientation="vertical"
         </LinearLayout>
 
 </LinearLayout>
-<Button
+    </ScrollView>
+    <FrameLayout
+        android:layout_alignParentBottom="true"
+app:elevation="24dp"
+        android:background="@color/colorAccent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    <Button
 
     app:elevation="58dp"
     android:id="@+id/locateFlat"
@@ -166,4 +175,5 @@ android:orientation="vertical"
     android:text="set my flat location"
     android:layout_alignParentBottom="true"
     />
+    </FrameLayout>
 </RelativeLayout>
