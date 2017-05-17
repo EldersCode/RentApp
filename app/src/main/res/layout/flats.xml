@@ -1,32 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/flat_activity"
+    android:background="@color/colorAccent"
+android:orientation="vertical"
     tools:context="com.tourism.hesham.rentapp.flats">
-    <EditText
-        android:id="@+id/user"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/user"/>
-
-    <Button
-        android:id="@+id/upload"
-        android:background="@drawable/orrange_button"
-
-        android:layout_width="100dp"
-        android:layout_height="40dp"
-        android:text="@string/retrive"
-        />
-    <FrameLayout
+        android:layout_height="wrap_content">
+    <LinearLayout
+        android:orientation="vertical"
+        android:scrollbarAlwaysDrawVerticalTrack="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:elevation="8dp"
-        >
+        android:background="@color/colorAccent"
+
+        tools:context="com.tourism.hesham.rentapp.flats"
+        android:id="@+id/linearLayout">
+
+
+
+
         <HorizontalScrollView
             android:layout_marginTop="50dp"
             android:layout_width="match_parent"
@@ -36,7 +33,7 @@
 
             <LinearLayout
                 android:scrollbarSize="410dp"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="130dp"
                 android:orientation="horizontal">
 
@@ -69,79 +66,114 @@
                     />
             </LinearLayout>
         </HorizontalScrollView>
-    </FrameLayout>
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:elevation="24dp"
-        >
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/champers"
-            />
+        <LinearLayout
+            android:paddingTop="20dp"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
         <EditText
-            android:id="@+id/chompersNo"
-            android:cursorVisible="false"
-            android:drawableBottom="@color/colorPrimaryDark"
-            android:layout_width="30dp"
-            android:layout_height="wrap_content"
+            android:id="@+id/noOfRooms"
             android:inputType="number"
+            android:hint="@string/noOfRooms"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             />
     </LinearLayout>
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:elevation="24dp"
-        >
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/area"
-            />
-        <EditText
-            android:id="@+id/area"
-            android:cursorVisible="false"
-            android:drawableBottom="@color/colorPrimaryDark"
-            android:layout_width="50dp"
-            android:layout_height="wrap_content"
-            android:inputType="number"
-            />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/m2"/>
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:elevation="24dp"
-        >
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/hint"
-            />
 
+        <LinearLayout
+            android:paddingTop="20dp"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <EditText
+                android:id="@+id/area"
+                android:hint="@string/area"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                />
+        </LinearLayout> <LinearLayout
+            android:paddingTop="20dp"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <EditText
+                android:id="@+id/noOfBeds"
+                android:inputType="number"
+                android:hint="@string/noOfRooms"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                />
+        </LinearLayout>
+        <LinearLayout
+            android:paddingTop="20dp"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <EditText
+                android:id="@+id/noOfPaths"
+                android:inputType="number"
+                android:hint="@string/noOfPathes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                />
+        </LinearLayout> <LinearLayout
+        android:paddingTop="20dp"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <EditText
+            android:id="@+id/price"
+            android:inputType="number"
+            android:hint="@string/noOfRooms"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            />
     </LinearLayout>
-    <EditText
-        android:id="@+id/hint"
-        android:cursorVisible="false"
-        android:drawableBottom="@color/colorPrimaryDark"
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:inputType="textAutoCorrect"
-        android:lines="3"
-        android:maxLines="3"
-        />
-    <Button
-        android:id="@+id/submit"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:src="@color/place_autocomplete_search_text"
-        />
+        <LinearLayout
+            android:paddingTop="20dp"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <EditText
+                android:id="@+id/hosbital"
+                android:hint="@string/hosbital"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                />
+        </LinearLayout>
+        <LinearLayout
+            android:paddingTop="20dp"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <EditText
+                android:id="@+id/shore"
+
+                android:hint="@string/shores"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                />
+        </LinearLayout>
+
 </LinearLayout>
+    </ScrollView>
+    <FrameLayout
+        android:layout_alignParentBottom="true"
+app:elevation="24dp"
+        android:background="@color/colorAccent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    <Button
+
+    app:elevation="58dp"
+    android:id="@+id/locateFlat"
+    android:clickable="true"
+    android:layout_width="wrap_content"
+    android:layout_height="70dp"
+    android:shadowColor="@color/cardview_shadow_end_color"
+    android:background="@drawable/orrange_button"
+    android:text="set my flat location"
+    android:layout_alignParentBottom="true"
+    />
+    </FrameLayout>
+</RelativeLayout>
