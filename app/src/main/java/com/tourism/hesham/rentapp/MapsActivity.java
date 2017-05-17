@@ -62,7 +62,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         NavigationView.OnNavigationItemSelectedListener {
 
     private GoogleMap mMap;
-    GoogleApiClient mGoogleApiClient , Geo;
+    GoogleApiClient mGoogleApiClient ;
     Location mLastLocation;
     Marker mCurrLocationMarker;
     LocationRequest mLocationRequest;
