@@ -73,9 +73,13 @@ private FirebaseDatabase database;
                 @Override
                 public void onClick(View v) {
         database = FirebaseDatabase.getInstance();
-                    DatabaseReference myRef = database.getReference("countries");
+                    DatabaseReference countries = database.getReference("countries");
+                    DatabaseReference countryName = database.getReference("egypt");
+                    DatabaseReference city = database.getReference("alex");
+countryName.child("alex").child("flats");
 
-                    myRef.setValue("Hello, World!");
+
+//                    myRef.setValue("Hello, World!");
                     AlertDialog dialog = builder.create();
 
                     dialog.show();
