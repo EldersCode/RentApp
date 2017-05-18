@@ -81,6 +81,11 @@ private FirebaseDatabase database;
                     countryName.child("egypt/"+"alex/"+"flats/"+profile.getId()).setValue(profile.getName());
                     countryName.child("egypt/"+"alex/"+"flats/"+"date").setValue("");
                     ///flat id owner id +building type +
+////////check if there was a previuos flat or not
+
+                    DatabaseReference users = database.getReference("users");
+                    users.child("egypt/"+"alex/"+profile.getId()+"/owns/"+"flat/"+"flatId").setValue("");
+////////////
                     countryName.child("egypt/"+"alex/"+"flats/"+"flatId").setValue("");
                     countryName.child("egypt/"+"alex/"+"flats/"+"area").setValue("");
                     countryName.child("egypt/"+"alex/"+"flats/"+"price").setValue("");
