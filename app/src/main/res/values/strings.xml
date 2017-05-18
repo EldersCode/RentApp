@@ -19,4 +19,9 @@
     <string name="champers">chompers</string>
     <string name="m2">m2</string>
     <string name="hint">hint</string>
+    <string name="title_activity_locate_on_map">Map</string>
+    <string name="noOfRooms">number of rooms</string>
+    <string name="shores">shore</string>
+    <string name="hosbital">hosbital</string>
+    <string name="noOfPathes">pathes</string>
 </resources>
