@@ -45,6 +45,8 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -58,6 +60,7 @@ public class LoginActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
 
+    private FirebaseDatabase database;
 
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,6 +98,16 @@ public class LoginActivity extends AppCompatActivity {
         facebook_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                database = FirebaseDatabase.getInstance();
+                Profile profile = Profile.getCurrentProfile();
+
+                FirebaseDatabase database = FirebaseDatabase.getInstance();
+
+                DatabaseReference users = database.getReference("users");
+                users.child("egypt/"+"alex/"+profile.getId()+"/status/").setValue("online");
+
+                users.child("egypt/"+"alex/"+profile.getId()+"/owns/"+"flat/"+"flatId").setValue("");
+
                 login_btn.performClick();
             }
         });

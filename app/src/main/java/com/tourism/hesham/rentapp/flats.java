@@ -18,6 +18,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.facebook.Profile;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -29,19 +30,17 @@ public class flats extends AppCompatActivity {
     private Uri uri1;
 //        private Button retriveImages;
 //        private EditText user;
-
+private Profile profile;
         private ImageView imageView1;
         private ImageView imageView2;
         private ImageView imageView3;
-private DatabaseReference firebaseDatabase;
     private AlertDialog.Builder builder;
 
 //private DatabaseReference firebaseDatabase;
 private FirebaseDatabase database;
-        private EditText chompersNo;
-        private EditText hint;
-        private EditText area;
+
         private View view;
+    //////////// tack images
     private Button locateFlat ;
      private StorageReference storageReference;
         private static final int GALARY_INTENT=2;
@@ -50,6 +49,8 @@ private FirebaseDatabase database;
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.flats);
+            profile = Profile.getCurrentProfile();
+            profile.getId();
             view = LayoutInflater.from(flats.this).inflate(R.layout.activity_locate_on_map,null,false);
 
             builder = new AlertDialog.Builder(flats.this);
@@ -73,27 +74,38 @@ private FirebaseDatabase database;
                 @Override
                 public void onClick(View v) {
         database = FirebaseDatabase.getInstance();
-                    DatabaseReference myRef = database.getReference("countries");
 
-                    myRef.setValue("Hello, World!");
+                    FirebaseDatabase database = FirebaseDatabase.getInstance();
+
+                    DatabaseReference countryName = database.getReference("contries");
+                    countryName.child("egypt/"+"alex/"+"flats/"+profile.getId()).setValue(profile.getName());
+                    countryName.child("egypt/"+"alex/"+"flats/"+"date").setValue("");
+                    ///flat id owner id +building type +
+////////check if there was a previuos flat or not
+
+                    DatabaseReference users = database.getReference("users");
+                    users.child("egypt/"+"alex/"+profile.getId()+"/owns/"+"flat/"+"flatId");
+////////////
+                    countryName.child("egypt/"+"alex/"+"flats/"+"flatId").setValue("");
+                    countryName.child("egypt/"+"alex/"+"flats/"+"area").setValue("");
+                    countryName.child("egypt/"+"alex/"+"flats/"+"price").setValue("");
+                    countryName.child("egypt/"+"alex/"+"flats/"+"rooms").setValue("");
+                    countryName.child("egypt/"+"alex/"+"flats/"+"beds").setValue("");
+                    countryName.child("egypt/"+"alex/"+"flats/"+"pathes").setValue("");
+                    countryName.child("egypt/"+"alex/"+"flats/"+"nearHosbital").setValue("");
+                    countryName.child("egypt/"+"alex/"+"flats/"+"nearGym").setValue("");
+                    countryName.child("egypt/"+"alex/"+"flats/"+"nearMeusium").setValue("");
+                    countryName.child("egypt/"+"alex/"+"flats/"+"nearShopingPlace").setValue("");
+                    countryName.child("egypt/"+"alex/"+"flats/"+"nearRestorant").setValue("");
+                    countryName.child("egypt/"+"alex/"+"flats/"+"nearShore").setValue("");
+                    countryName.child("egypt/"+"alex/"+"flats/"+"location").setValue("");
+                    countryName.child("egypt/"+"alex/"+"flats/"+"policeStation").setValue("");
+
                     AlertDialog dialog = builder.create();
 
                     dialog.show();
                 }
             });
-
-            /////////////
-//            LayoutInflater inflater = (this).getLayoutInflater();
-//            View dialogLayout = inflater.inflate(R.layout.flats,
-//                    null);
-
-//            android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
-//            builder.setView(dialogLayout);
-//
-//            android.app.AlertDialog dialog = builder.create();
-//            dialog.show();
-            ////////////////
-
             ////////////////
             storageReference= FirebaseStorage.getInstance().getReference();
 
@@ -200,7 +212,7 @@ private FirebaseDatabase database;
             if(requestCode== GALARY_INTENT && resultCode==RESULT_OK ){
                 //after selecting flat image send it to storage database
                 final Uri uri =data.getData();
-                StorageReference filepath =storageReference.child("flats").child(String.valueOf(i));
+                StorageReference filepath =storageReference.child("egypt/"+"alex/"+"flats/"+"flatId").child(String.valueOf(i));
                 filepath.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
@@ -229,6 +241,7 @@ private FirebaseDatabase database;
     @Override
     public void onBackPressed() {
         startActivity(new Intent(getApplicationContext(),MapsActivity.class));
+
     }
 
     }

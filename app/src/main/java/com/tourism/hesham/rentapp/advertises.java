@@ -27,20 +27,20 @@ import com.google.firebase.storage.UploadTask;
 public class advertises extends AppCompatActivity {
 private de.hdodenhof.circleimageview.CircleImageView flats;
     //////////////
-    private Button retriveImages;
-    private EditText user;
-    private ImageView imageView1;
-    private ImageView imageView2;
-    private ImageView imageView3;
-    private AlertDialog.Builder builder;
-    private EditText chompersNo;
-    private EditText hint;
-    private EditText area;
-    private Button submit;
-    private  View view;
-    private StorageReference storageReference;
-    private static final int GALARY_INTENT=2;
-    private int i=0;
+//    private Button retriveImages;
+//    private EditText user;
+//    private ImageView imageView1;
+//    private ImageView imageView2;
+//    private ImageView imageView3;
+//    private AlertDialog.Builder builder;
+//    private EditText chompersNo;
+//    private EditText hint;
+//    private EditText area;
+//    private Button submit;
+//    private  View view;
+//    private StorageReference storageReference;
+//    private static final int GALARY_INTENT=2;
+//    private int i=0;
     private Profile profile ;
     //////////////
     @Override
@@ -49,51 +49,51 @@ private de.hdodenhof.circleimageview.CircleImageView flats;
         setContentView(R.layout.activity_advertises);
          profile = Profile.getCurrentProfile();
         profile.getName();
-        Toast.makeText(getApplicationContext(), "Welcome "+ profile.getName() + " :)", Toast.LENGTH_LONG).show();
+//        Toast.makeText(getApplicationContext(), "Welcome "+ profile.getName() + " :)", Toast.LENGTH_LONG).show();
 
         flats=(de.hdodenhof.circleimageview.CircleImageView) findViewById(R.id.flats);
 
         //////////////////////////// flat dialog components
-       view = LayoutInflater.from(advertises.this).inflate(R.layout.flats,null,false);
-        imageView1 = (ImageView) view.findViewById(R.id.img1);
-        imageView2 = (ImageView) view.findViewById(R.id.img2);
-        imageView3 = (ImageView) view.findViewById(R.id.img3);
+//       view = LayoutInflater.from(advertises.this).inflate(R.layout.flats,null,false);
+//        imageView1 = (ImageView) view.findViewById(R.id.img1);
+//        imageView2 = (ImageView) view.findViewById(R.id.img2);
+//        imageView3 = (ImageView) view.findViewById(R.id.img3);
 
-        storageReference= FirebaseStorage.getInstance().getReference();
+//        storageReference= FirebaseStorage.getInstance().getReference();
 
 
-        imageView1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent=new Intent(Intent.ACTION_PICK);
-                intent.setType("image/*");
-                startActivityForResult(intent,GALARY_INTENT);
-                i=1;
-
-            }
-        });
-        imageView2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Intent intent=new Intent(Intent.ACTION_PICK);
-                intent.setType("image/*");
-                startActivityForResult(intent,GALARY_INTENT);
-                i=2;
-
-            }
-        });
-        imageView3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent=new Intent(Intent.ACTION_PICK);
-                intent.setType("image/*");
-                startActivityForResult(intent,GALARY_INTENT);
-                i=3;
-            }
-        });
-        builder = new AlertDialog.Builder(advertises.this);
-        builder.setView(view);
+//        imageView1.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent=new Intent(Intent.ACTION_PICK);
+//                intent.setType("image/*");
+//                startActivityForResult(intent,GALARY_INTENT);
+//                i=1;
+//
+//            }
+//        });
+//        imageView2.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//                Intent intent=new Intent(Intent.ACTION_PICK);
+//                intent.setType("image/*");
+//                startActivityForResult(intent,GALARY_INTENT);
+//                i=2;
+//
+//            }
+//        });
+//        imageView3.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent=new Intent(Intent.ACTION_PICK);
+//                intent.setType("image/*");
+//                startActivityForResult(intent,GALARY_INTENT);
+//                i=3;
+            //}
+        //});
+//        builder = new AlertDialog.Builder(advertises.this);
+//        builder.setView(view);
         ///////////////////////////
 
         flats.setOnClickListener(new View.OnClickListener() {

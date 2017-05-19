@@ -11,6 +11,7 @@
 android:id="@+id/flats"
 
     android:background="@drawable/flats"
+    android:alpha="3"
     app:elevation="24dp"
     android:layout_width="50dp"
     android:layout_height="50dp"
