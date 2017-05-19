@@ -43,11 +43,11 @@ public class EventsActivity extends AppCompatActivity {
 
                 if(IsItHidden ==true) {
                     TheEventTypesContainor.setVisibility(LinearLayout.VISIBLE);
-                    ToggleTheEventTypeContainorBtn.setBackgroundResource(R.mipmap.minus);
+                    ToggleTheEventTypeContainorBtn.setBackgroundResource(R.mipmap.gift);
                     IsItHidden=false;
                 }
                 else{TheEventTypesContainor.setVisibility(LinearLayout.GONE);
-                    ToggleTheEventTypeContainorBtn.setBackgroundResource(R.mipmap.plus);
+                    ToggleTheEventTypeContainorBtn.setBackgroundResource(R.mipmap.gift);
                     IsItHidden=true;
                 }
 

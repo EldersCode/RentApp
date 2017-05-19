@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -73,33 +74,34 @@ private FirebaseDatabase database;
             locateFlat.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-        database = FirebaseDatabase.getInstance();
+
+                    database = FirebaseDatabase.getInstance();
+
+                    ///check if there was a previuos flat or not
+                    DatabaseReference users = database.getReference("users");
+                    users.child("egypt/"+"alex/"+profile.getId()+"/owns/"+"flat/"+"flatId").setValue("");
+////////////
 
                     FirebaseDatabase database = FirebaseDatabase.getInstance();
-
                     DatabaseReference countryName = database.getReference("contries");
+
                     countryName.child("egypt/"+"alex/"+"flats/"+profile.getId()).setValue(profile.getName());
                     countryName.child("egypt/"+"alex/"+"flats/"+"date").setValue("");
                     ///flat id owner id +building type +
-////////check if there was a previuos flat or not
-
-                    DatabaseReference users = database.getReference("users");
-                    users.child("egypt/"+"alex/"+profile.getId()+"/owns/"+"flat/"+"flatId");
-////////////
-                    countryName.child("egypt/"+"alex/"+"flats/"+"flatId").setValue("");
-                    countryName.child("egypt/"+"alex/"+"flats/"+"area").setValue("");
-                    countryName.child("egypt/"+"alex/"+"flats/"+"price").setValue("");
-                    countryName.child("egypt/"+"alex/"+"flats/"+"rooms").setValue("");
-                    countryName.child("egypt/"+"alex/"+"flats/"+"beds").setValue("");
-                    countryName.child("egypt/"+"alex/"+"flats/"+"pathes").setValue("");
-                    countryName.child("egypt/"+"alex/"+"flats/"+"nearHosbital").setValue("");
-                    countryName.child("egypt/"+"alex/"+"flats/"+"nearGym").setValue("");
-                    countryName.child("egypt/"+"alex/"+"flats/"+"nearMeusium").setValue("");
-                    countryName.child("egypt/"+"alex/"+"flats/"+"nearShopingPlace").setValue("");
-                    countryName.child("egypt/"+"alex/"+"flats/"+"nearRestorant").setValue("");
-                    countryName.child("egypt/"+"alex/"+"flats/"+"nearShore").setValue("");
-                    countryName.child("egypt/"+"alex/"+"flats/"+"location").setValue("");
-                    countryName.child("egypt/"+"alex/"+"flats/"+"policeStation").setValue("");
+                    countryName.child("egypt/"+"alex/"+"flats/"+"rooms/"+"roomsNo/"+"pathes/"+"pathesNo/"+"flatId/"+profile.getId()).setValue(profile.getId());
+                    countryName.child("egypt/"+"alex/"+"flats/"+"rooms/"+"roomsNo/"+"pathes/"+"pathesNo/"+"area").setValue("");
+                    countryName.child("egypt/"+"alex/"+"flats/"+"rooms/"+"roomsNo/"+"pathes/"+"pathesNo/"+"price").setValue("");
+//                   String  s= String.valueOf(countryName.child("egypt/"+"alex/"+"flats/"+"rooms/"+"roomsNo/"+"pathes/"+"pathesNjhfbvjkfo/").push());
+//                    Log.e("test",s);
+                    countryName.child("egypt/"+"alex/"+"flats/"+"rooms/"+"roomsNo/"+"pathes/"+"pathesNo/"+"beds").setValue("");
+                    countryName.child("egypt/"+"alex/"+"flats/"+"rooms/"+"roomsNo/"+"pathes/"+"pathesNo/"+"nearHosbital").setValue("");
+                    countryName.child("egypt/"+"alex/"+"flats/"+"rooms/"+"roomsNo/"+"pathes/"+"pathesNo/"+"nearGym").setValue("");
+                    countryName.child("egypt/"+"alex/"+"flats/"+"rooms/"+"roomsNo/"+"pathes/"+"pathesNo/"+"nearMeusium").setValue("");
+                    countryName.child("egypt/"+"alex/"+"flats/"+"rooms/"+"roomsNo/"+"pathes/"+"pathesNo/"+"nearShopingPlace").setValue("");
+                    countryName.child("egypt/"+"alex/"+"flats/"+"rooms/"+"roomsNo/"+"pathes/"+"pathesNo/"+"nearRestorant").setValue("");
+                    countryName.child("egypt/"+"alex/"+"flats/"+"rooms/"+"roomsNo/"+"pathes/"+"pathesNo/"+"nearShore").setValue("");
+                    countryName.child("egypt/"+"alex/"+"flats/"+"rooms/"+"roomsNo/"+"pathes/"+"pathesNo/"+"location").setValue("");
+                    countryName.child("egypt/"+"alex/"+"flats/"+"rooms/"+"roomsNo/"+"pathes/"+"pathesNo/"+"nearPoliceStation").setValue("");
 
                     AlertDialog dialog = builder.create();
 

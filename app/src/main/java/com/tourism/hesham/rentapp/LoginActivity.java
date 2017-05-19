@@ -77,19 +77,14 @@ public class LoginActivity extends AppCompatActivity {
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-
                 if(firebaseAuth.getCurrentUser() != null){
 
                     Intent intent = new Intent(getApplicationContext() , MapsActivity.class);
                     startActivity(intent);
                     finish();
-
                 }
             }
         };
-
-
-
 //        if (login_btn.getText().equals("Log out")) {
 //            Intent intent = new Intent(getApplicationContext(), MapsActivity.class);
 //            startActivity(intent);
@@ -105,9 +100,7 @@ public class LoginActivity extends AppCompatActivity {
 
                 DatabaseReference users = database.getReference("users");
                 users.child("egypt/"+"alex/"+profile.getId()+"/status/").setValue("online");
-
                 users.child("egypt/"+"alex/"+profile.getId()+"/owns/"+"flat/"+"flatId").setValue("");
-
                 login_btn.performClick();
             }
         });
@@ -216,7 +209,7 @@ public class LoginActivity extends AppCompatActivity {
                             FirebaseUser user = mAuth.getCurrentUser();
                             Profile profile = Profile.getCurrentProfile();
 //                            Intent main = new Intent(getApplicationContext() , MapsActivity.class);
-//                            // sending user data to MapsActivity from facebook account :
+//              /              // sending user data to MapsActivity from facebook account :
 //
 //                            main.putExtra("name" , profile.getName());
 //                            main.putExtra("imageUrl" , profile.getProfilePictureUri(100,100).toString());
