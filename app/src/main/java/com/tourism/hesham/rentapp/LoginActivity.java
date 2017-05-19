@@ -104,6 +104,8 @@ public class LoginActivity extends AppCompatActivity {
                 FirebaseDatabase database = FirebaseDatabase.getInstance();
 
                 DatabaseReference users = database.getReference("users");
+                users.child("egypt/"+"alex/"+profile.getId()+"/status/").setValue("online");
+
                 users.child("egypt/"+"alex/"+profile.getId()+"/owns/"+"flat/"+"flatId").setValue("");
 
                 login_btn.performClick();

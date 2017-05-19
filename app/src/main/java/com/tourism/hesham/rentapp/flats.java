@@ -84,7 +84,7 @@ private FirebaseDatabase database;
 ////////check if there was a previuos flat or not
 
                     DatabaseReference users = database.getReference("users");
-                    users.child("egypt/"+"alex/"+profile.getId()+"/owns/"+"flat/"+"flatId").setValue("");
+                    users.child("egypt/"+"alex/"+profile.getId()+"/owns/"+"flat/"+"flatId");
 ////////////
                     countryName.child("egypt/"+"alex/"+"flats/"+"flatId").setValue("");
                     countryName.child("egypt/"+"alex/"+"flats/"+"area").setValue("");
