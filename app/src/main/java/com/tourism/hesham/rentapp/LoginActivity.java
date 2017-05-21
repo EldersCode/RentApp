@@ -96,11 +96,11 @@ public class LoginActivity extends AppCompatActivity {
                 database = FirebaseDatabase.getInstance();
                 Profile profile = Profile.getCurrentProfile();
 
-                FirebaseDatabase database = FirebaseDatabase.getInstance();
-
-                DatabaseReference users = database.getReference("users");
-                users.child("egypt/"+"alex/"+profile.getId()+"/status/").setValue("online");
-                users.child("egypt/"+"alex/"+profile.getId()+"/owns/"+"flat/"+"flatId").setValue("");
+//                FirebaseDatabase database = FirebaseDatabase.getInstance();
+//
+//                DatabaseReference users = database.getReference("users");
+//                users.child("egypt/"+"alex/"+profile.getId()+"/status/").setValue("online");
+//                users.child("egypt/"+"alex/"+profile.getId()+"/owns/"+"flat/"+"flatId").setValue("");
                 login_btn.performClick();
             }
         });

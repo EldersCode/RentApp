@@ -1,9 +1,6 @@
 package com.tourism.hesham.rentapp;
 
 
-
-
-
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -21,95 +18,102 @@ import android.widget.Toast;
 
 import com.facebook.Profile;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.util.Map;
+
 public class flats extends AppCompatActivity {
     private Uri uri1;
-//        private Button retriveImages;
+    //        private Button retriveImages;
 //        private EditText user;
-private Profile profile;
-        private ImageView imageView1;
-        private ImageView imageView2;
-        private ImageView imageView3;
+    private Profile profile;
+    private ImageView imageView1;
+    private ImageView imageView2;
+    private ImageView imageView3;
     private AlertDialog.Builder builder;
 
-//private DatabaseReference firebaseDatabase;
-private FirebaseDatabase database;
+    //private DatabaseReference firebaseDatabase;
+    private FirebaseDatabase database;
 
-        private View view;
+    private View view;
     //////////// tack images
-    private Button locateFlat ;
-     private StorageReference storageReference;
-        private static final int GALARY_INTENT=2;
-        private int i=0;
-        @Override
-        protected void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-            setContentView(R.layout.flats);
-            profile = Profile.getCurrentProfile();
-            profile.getId();
-            view = LayoutInflater.from(flats.this).inflate(R.layout.activity_locate_on_map,null,false);
+    private Button locateFlat;
+    private StorageReference storageReference;
+    private static final int GALARY_INTENT = 2;
+    private int i = 0;
 
-            builder = new AlertDialog.Builder(flats.this);
-            builder.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    if (view != null) {
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.flats);
+        profile = Profile.getCurrentProfile();
+        profile.getId();
+        view = LayoutInflater.from(flats.this).inflate(R.layout.activity_locate_on_map, null, false);
 
-            ViewGroup parentViewGroup = (ViewGroup) view.getParent();
+        builder = new AlertDialog.Builder(flats.this);
+        builder.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if (view != null) {
 
-            if (parentViewGroup != null) {
-                parentViewGroup.removeAllViews();
+                    ViewGroup parentViewGroup = (ViewGroup) view.getParent();
+
+                    if (parentViewGroup != null) {
+                        parentViewGroup.removeAllViews();
+                    }
+                }
+                dialog.dismiss();
             }
-        }
-        dialog.dismiss();
-                }
-            });
-            builder.setView(view);
-            locateFlat=(Button) findViewById(R.id.locateFlat);
-            locateFlat.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
+        });
+        builder.setView(view);
+        locateFlat = (Button) findViewById(R.id.locateFlat);
+        locateFlat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
-                    database = FirebaseDatabase.getInstance();
+                database = FirebaseDatabase.getInstance();
 
-                    ///check if there was a previuos flat or not
-                    DatabaseReference users = database.getReference("users");
-                    users.child("egypt/"+"alex/"+profile.getId()+"/owns/"+"flat/"+"flatId").setValue("");
-////////////
+                ///check if there was a previuos flat or not
 
-                    FirebaseDatabase database = FirebaseDatabase.getInstance();
-                    DatabaseReference countryName = database.getReference("contries");
 
-                    countryName.child("egypt/"+"alex/"+"flats/"+profile.getId()).setValue(profile.getName());
-                    countryName.child("egypt/"+"alex/"+"flats/"+"date").setValue("");
-                    ///flat id owner id +building type +
-                    countryName.child("egypt/"+"alex/"+"flats/"+"rooms/"+"roomsNo/"+"pathes/"+"pathesNo/"+"flatId/"+profile.getId()).setValue(profile.getId());
-                    countryName.child("egypt/"+"alex/"+"flats/"+"rooms/"+"roomsNo/"+"pathes/"+"pathesNo/"+"area").setValue("");
-                    countryName.child("egypt/"+"alex/"+"flats/"+"rooms/"+"roomsNo/"+"pathes/"+"pathesNo/"+"price").setValue("");
-//                   String  s= String.valueOf(countryName.child("egypt/"+"alex/"+"flats/"+"rooms/"+"roomsNo/"+"pathes/"+"pathesNjhfbvjkfo/").push());
-//                    Log.e("test",s);
-                    countryName.child("egypt/"+"alex/"+"flats/"+"rooms/"+"roomsNo/"+"pathes/"+"pathesNo/"+"beds").setValue("");
-                    countryName.child("egypt/"+"alex/"+"flats/"+"rooms/"+"roomsNo/"+"pathes/"+"pathesNo/"+"nearHosbital").setValue("");
-                    countryName.child("egypt/"+"alex/"+"flats/"+"rooms/"+"roomsNo/"+"pathes/"+"pathesNo/"+"nearGym").setValue("");
-                    countryName.child("egypt/"+"alex/"+"flats/"+"rooms/"+"roomsNo/"+"pathes/"+"pathesNo/"+"nearMeusium").setValue("");
-                    countryName.child("egypt/"+"alex/"+"flats/"+"rooms/"+"roomsNo/"+"pathes/"+"pathesNo/"+"nearShopingPlace").setValue("");
-                    countryName.child("egypt/"+"alex/"+"flats/"+"rooms/"+"roomsNo/"+"pathes/"+"pathesNo/"+"nearRestorant").setValue("");
-                    countryName.child("egypt/"+"alex/"+"flats/"+"rooms/"+"roomsNo/"+"pathes/"+"pathesNo/"+"nearShore").setValue("");
-                    countryName.child("egypt/"+"alex/"+"flats/"+"rooms/"+"roomsNo/"+"pathes/"+"pathesNo/"+"location").setValue("");
-                    countryName.child("egypt/"+"alex/"+"flats/"+"rooms/"+"roomsNo/"+"pathes/"+"pathesNo/"+"nearPoliceStation").setValue("");
+                DatabaseReference users = database.getReference("users");
+                DatabaseReference houses = database.getReference("houses");
+                DatabaseReference regions = database.getReference("regions");
 
-                    AlertDialog dialog = builder.create();
+                users.child("userId/" + "houses/" + "owened/" + "houseId/").setValue("");
 
-                    dialog.show();
-                }
-            });
-            ////////////////
-            storageReference= FirebaseStorage.getInstance().getReference();
+                houses.child("houseId/" + "details/").setValue("");
+                houses.child("houseId/" + "bedRoomsNo/").setValue("");
+                houses.child("houseId/" + "bedsNo/").setValue("");
+                houses.child("houseId/" + "bathNo/").setValue("");
+
+                houses.child("houseId/" + "price/").setValue("");
+                houses.child("houseId/" + "parking/").setValue("");
+                houses.child("houseId/" + "negotiablePrice/").setValue("boolean");
+                houses.child("houseId/" + "livingRoom/").setValue("boolean");
+                houses.child("houseId/" + "bets/").setValue("boolean");
+                houses.child("houseId/" + "kitchen/").setValue("boolean");
+                houses.child("houseId/" + "coolingSystem/").setValue("boolean");
+                houses.child("houseId/" + "area/").setValue("");
+                houses.child("houseId/" + "houseIdNo/"+"location/").setValue("");
+
+                regions.child("contry/" + "city/" + "houseId").setValue("location");
+
+                AlertDialog dialog = builder.create();
+
+                dialog.show();
+            }
+        });
+        ////////////////
+        storageReference = FirebaseStorage.getInstance().getReference();
 
 //            retriveImages.setOnClickListener(new View.OnClickListener() {
 //                @Override
@@ -119,41 +123,41 @@ private FirebaseDatabase database;
 //                    onRetriveData(user.getText().toString(), imageView3, 3);
 //                }
 //            });
-            imageView1 = (ImageView) findViewById(R.id.img1);
-            imageView2 = (ImageView) findViewById(R.id.img2);
-            imageView3 = (ImageView) findViewById(R.id.img3);
+        imageView1 = (ImageView) findViewById(R.id.img1);
+        imageView2 = (ImageView) findViewById(R.id.img2);
+        imageView3 = (ImageView) findViewById(R.id.img3);
 
-            imageView1.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent=new Intent(Intent.ACTION_PICK);
-                    intent.setType("image/*");
-                    startActivityForResult(intent,GALARY_INTENT);
-                    i=1;
-                }
-            });
-            imageView2.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent=new Intent(Intent.ACTION_PICK);
-                    intent.setType("image/*");
-                    startActivityForResult(intent,GALARY_INTENT);
-                    i=2;
-                }
-            });
-            imageView3.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent=new Intent(Intent.ACTION_PICK);
-                    intent.setType("image/*");
-                    startActivityForResult(intent,GALARY_INTENT);
-                    i=3;
-                }
-            });
+        imageView1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Intent.ACTION_PICK);
+                intent.setType("image/*");
+                startActivityForResult(intent, GALARY_INTENT);
+                i = 1;
+            }
+        });
+        imageView2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Intent.ACTION_PICK);
+                intent.setType("image/*");
+                startActivityForResult(intent, GALARY_INTENT);
+                i = 2;
+            }
+        });
+        imageView3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Intent.ACTION_PICK);
+                intent.setType("image/*");
+                startActivityForResult(intent, GALARY_INTENT);
+                i = 3;
+            }
+        });
 
 
-        }
-        //retrive users flat data
+    }
+    //retrive users flat data
 //        private void onRetriveData(String userName, final ImageView img,int x){
 //            StorageReference pathReference = storageReference.child("flats").child(userName+x);
 //
@@ -194,8 +198,7 @@ private FirebaseDatabase database;
 //        Button btnDismiss = (Button) dialogLayout.findViewById(R.id.btnCancelCamera);
 
 
-
-//                }
+    //                }
 //            });
 //submit.setOnClickListener(new View.OnClickListener() {
 //    @Override
@@ -206,44 +209,44 @@ private FirebaseDatabase database;
 //firebaseDatabase.child("hint discribtion").child(hint.getText().toString());
 //    }
 //});
-       // }
+    // }
 ///////////////////////////////////////////////sending images to server
-        @Override
-        protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-            super.onActivityResult(requestCode, resultCode, data);
-            if(requestCode== GALARY_INTENT && resultCode==RESULT_OK ){
-                //after selecting flat image send it to storage database
-                final Uri uri =data.getData();
-                StorageReference filepath =storageReference.child("egypt/"+"alex/"+"flats/"+"flatId").child(String.valueOf(i));
-                filepath.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        Toast.makeText(getApplicationContext(),"done",Toast.LENGTH_SHORT).show();
-                        //to show images on image view we set after selecting image to upload
-                        switch (i){
-                            case 1 :
-                                imageView1.setImageURI(uri);
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == GALARY_INTENT && resultCode == RESULT_OK) {
+            //after selecting flat image send it to storage database
+            final Uri uri = data.getData();
+            StorageReference filepath = storageReference.child("egypt/" + "alex/" + "flats/" + "flatId").child(String.valueOf(i));
+            filepath.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    Toast.makeText(getApplicationContext(), "done", Toast.LENGTH_SHORT).show();
+                    //to show images on image view we set after selecting image to upload
+                    switch (i) {
+                        case 1:
+                            imageView1.setImageURI(uri);
 
-                                break;
-                            case 2:
-                                imageView2.setImageURI(uri);
-                                break;
-                            case 3:
-                                imageView3.setImageURI(uri);
-                                break;
-                        }
-
-
+                            break;
+                        case 2:
+                            imageView2.setImageURI(uri);
+                            break;
+                        case 3:
+                            imageView3.setImageURI(uri);
+                            break;
                     }
-                });
 
-            }
+
+                }
+            });
+
         }
+    }
 
     @Override
     public void onBackPressed() {
-        startActivity(new Intent(getApplicationContext(),MapsActivity.class));
+        startActivity(new Intent(getApplicationContext(), MapsActivity.class));
 
     }
 
-    }
+}
