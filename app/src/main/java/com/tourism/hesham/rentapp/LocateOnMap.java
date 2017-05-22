@@ -363,7 +363,7 @@ public class LocateOnMap extends FragmentActivity implements OnMapReadyCallback
                     JSONObject jsonPart = arr.getJSONObject(i);
                     JSONObject jsonGeometry = jsonPart.getJSONObject("geometry");
                     JSONObject jsonLocation = jsonGeometry.getJSONObject("location");
-                    String lat = jsonLocation.getString("lat");
+                    final String lat = jsonLocation.getString("lat");
                     String lng = jsonLocation.getString("lng");
 
                     latitude = Double.valueOf(lat);
@@ -373,8 +373,28 @@ public class LocateOnMap extends FragmentActivity implements OnMapReadyCallback
 
                     mMap.clear();
                     mMap.addMarker(new MarkerOptions().position(new LatLng(latitude , longitude)).title("here")
-                            .icon(BitmapDescriptorFactory.defaultMarker()));
+                            .icon(BitmapDescriptorFactory.defaultMarker()).draggable(true));
                     mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latitude, longitude), 7));
+                    mMap.setOnMarkerDragListener(new GoogleMap.OnMarkerDragListener() {
+                        @Override
+                        public void onMarkerDragStart(Marker marker) {
+//                            LatLng latLng = marker.getPosition();
+//                            mMap.addMarker(new MarkerOptions().position(latLng));
+                        }
+
+                        @Override
+                        public void onMarkerDrag(Marker marker) {
+//                            LatLng latLng = marker.getPosition();
+//                            mMap.addMarker(new MarkerOptions().position(latLng));
+                        }
+
+                        @Override
+                        public void onMarkerDragEnd(Marker marker) {
+                            //lma el marker yo2af f a5er makan howa da el latlng
+                            LatLng latLng = marker.getPosition();
+                            
+                        }
+                    });
 
 
 

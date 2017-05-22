@@ -20,8 +20,26 @@
     <string name="m2">m2</string>
     <string name="hint">hint</string>
     <string name="title_activity_locate_on_map">Map</string>
-    <string name="noOfRooms">number of rooms</string>
+    <string name="noOfBedrooms">- Number of Bedrooms</string>
     <string name="shores">shore</string>
     <string name="hosbital">hosbital</string>
     <string name="noOfPathes">pathes</string>
+    <string name="apartment_location_english">Set Apartment Location</string>
+    <string name="apartment_area_english">- Apartment area</string>
+    <string name="area_hint">put area here ..</string>
+    <string name="bedrooms_hint">Number of bedrooms ..</string>
+    <string name="noOfBathrooms">- Number of Bathrooms</string>
+    <string name="bathrooms_hint">Number of bathrooms ..</string>
+    <string name="pets">- Pets allowed</string>
+    <string name="cat">Cat</string>
+    <string name="bDog">Big Dogs</string>
+    <string name="sDog">Small Dogs</string>
+    <string name="others">Others</string>
+    <string name="Parking">- Parking Lots</string>
+    <string name="livingRoom">- Living room</string>
+    <string name="kitchen">- Kitchen</string>
+    <string name="coolingSystem">- Cooling System</string>
+    <string name="negotiablePrice">- Negotiable Price</string>
+    <string name="priceText">- Price</string>
+    <string name="price">Price</string>
 </resources>

@@ -12,8 +12,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.Switch;
 import android.widget.Toast;
 
 import com.facebook.Profile;
@@ -38,11 +41,24 @@ public class flats extends AppCompatActivity {
     private ImageView imageView1;
     private ImageView imageView2;
     private ImageView imageView3;
-    private AlertDialog.Builder builder;
+    // layout inestances
 
+    private EditText priceEditText;
+    private EditText ApartmentAreaEditText;
+    private EditText noOfBedRoomsEditText;
+    private EditText noOfBathRoomsEditText;
+    private Switch parkingLotsSwitch;
+    private Switch LivingRoomSwitch;
+    private Switch KitchenSwitch;
+    private Switch coolingSystemSwitch;
+    private Switch NegotiablePriceSwitch;
+
+    //
+    private AlertDialog.Builder builder;
+    private LinearLayout petsLayout;
+    private Switch petsSwitch;
     //private DatabaseReference firebaseDatabase;
     private FirebaseDatabase database;
-
     private View view;
     //////////// tack images
     private Button locateFlat;
@@ -54,6 +70,36 @@ public class flats extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.flats);
+//declearing inistances
+        petsLayout = (LinearLayout) findViewById(R.id.switchOn_pets);
+        petsSwitch = (Switch) findViewById(R.id.petSwitch);
+        priceEditText = (EditText) findViewById(R.id.Price);
+        ApartmentAreaEditText = (EditText) findViewById(R.id.area);
+        noOfBedRoomsEditText = (EditText) findViewById(R.id.bedrooms);
+        noOfBathRoomsEditText = (EditText) findViewById(R.id.bathrooms);
+
+        parkingLotsSwitch=(Switch)findViewById(R.id.ParkingSwitch);
+        LivingRoomSwitch=(Switch)findViewById(R.id.livingRoomSwitch);
+        KitchenSwitch=(Switch)findViewById(R.id.kitchenSwitch);
+        coolingSystemSwitch=(Switch)findViewById(R.id.coolingSystemSwitch);
+        NegotiablePriceSwitch=(Switch)findViewById(R.id.negotiablePriceSwitch);
+
+
+        petsLayout.setVisibility(View.GONE);
+
+        petsSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if (b) {
+                    petsLayout.setVisibility(View.VISIBLE);
+                } else {
+                    petsLayout.setVisibility(View.GONE);
+
+                }
+
+            }
+        });
+
         profile = Profile.getCurrentProfile();
         profile.getId();
         view = LayoutInflater.from(flats.this).inflate(R.layout.activity_locate_on_map, null, false);
@@ -83,6 +129,7 @@ public class flats extends AppCompatActivity {
 
                 ///check if there was a previuos flat or not
 
+                startActivity(new Intent(getApplicationContext(), LocateOnMap.class));
 
                 DatabaseReference users = database.getReference("users");
                 DatabaseReference houses = database.getReference("houses");
@@ -90,26 +137,23 @@ public class flats extends AppCompatActivity {
 
                 users.child("userId/" + "houses/" + "owened/" + "houseId/").setValue("");
 
-                houses.child("houseId/" + "details/").setValue("");
-                houses.child("houseId/" + "bedRoomsNo/").setValue("");
-                houses.child("houseId/" + "bedsNo/").setValue("");
-                houses.child("houseId/" + "bathNo/").setValue("");
-
-                houses.child("houseId/" + "price/").setValue("");
-                houses.child("houseId/" + "parking/").setValue("");
-                houses.child("houseId/" + "negotiablePrice/").setValue("boolean");
-                houses.child("houseId/" + "livingRoom/").setValue("boolean");
-                houses.child("houseId/" + "bets/").setValue("boolean");
-                houses.child("houseId/" + "kitchen/").setValue("boolean");
-                houses.child("houseId/" + "coolingSystem/").setValue("boolean");
-                houses.child("houseId/" + "area/").setValue("");
-                houses.child("houseId/" + "houseIdNo/"+"location/").setValue("");
+                houses.child("houseId/" + "bedRoomsNo/").setValue(noOfBedRoomsEditText.getText().toString());
+                houses.child("houseId/" + "bathNo/").setValue(noOfBathRoomsEditText.getText().toString());
+                houses.child("houseId/" + "price/").setValue(priceEditText.getText().toString());
+                houses.child("houseId/" + "parking/").setValue(String.valueOf(parkingLotsSwitch.isChecked()));
+                houses.child("houseId/" + "negotiablePrice/").setValue(String.valueOf(NegotiablePriceSwitch.isChecked()));
+                houses.child("houseId/" + "livingRoom/").setValue(String.valueOf(LivingRoomSwitch.isChecked()));
+                houses.child("houseId/" + "pets/").setValue("boolean");
+                houses.child("houseId/" + "kitchen/").setValue(String.valueOf(KitchenSwitch.isChecked()));
+                houses.child("houseId/" + "coolingSystem/").setValue(String.valueOf(coolingSystemSwitch.isChecked()));
+                houses.child("houseId/" + "area/").setValue(ApartmentAreaEditText.getText().toString());
+                houses.child("houseId/" + "houseIdNo/" + "location/").setValue("");
 
                 regions.child("contry/" + "city/" + "houseId").setValue("location");
 
-                AlertDialog dialog = builder.create();
-
-                dialog.show();
+//                AlertDialog dialog = builder.create();
+//
+//                dialog.show();
             }
         });
         ////////////////
@@ -123,37 +167,37 @@ public class flats extends AppCompatActivity {
 //                    onRetriveData(user.getText().toString(), imageView3, 3);
 //                }
 //            });
-        imageView1 = (ImageView) findViewById(R.id.img1);
-        imageView2 = (ImageView) findViewById(R.id.img2);
-        imageView3 = (ImageView) findViewById(R.id.img3);
+//        imageView1 = (ImageView) findViewById(R.id.img1);
+//        imageView2 = (ImageView) findViewById(R.id.img2);
+//        imageView3 = (ImageView) findViewById(R.id.img3);
 
-        imageView1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(Intent.ACTION_PICK);
-                intent.setType("image/*");
-                startActivityForResult(intent, GALARY_INTENT);
-                i = 1;
-            }
-        });
-        imageView2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(Intent.ACTION_PICK);
-                intent.setType("image/*");
-                startActivityForResult(intent, GALARY_INTENT);
-                i = 2;
-            }
-        });
-        imageView3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(Intent.ACTION_PICK);
-                intent.setType("image/*");
-                startActivityForResult(intent, GALARY_INTENT);
-                i = 3;
-            }
-        });
+//        imageView1.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(Intent.ACTION_PICK);
+//                intent.setType("image/*");
+//                startActivityForResult(intent, GALARY_INTENT);
+//                i = 1;
+//            }
+//        });
+//        imageView2.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(Intent.ACTION_PICK);
+//                intent.setType("image/*");
+//                startActivityForResult(intent, GALARY_INTENT);
+//                i = 2;
+//            }
+//        });
+//        imageView3.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(Intent.ACTION_PICK);
+//                intent.setType("image/*");
+//                startActivityForResult(intent, GALARY_INTENT);
+//                i = 3;
+//            }
+//        });
 
 
     }

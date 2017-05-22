@@ -119,8 +119,7 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-    private void loginWithFB(){
-
+        private void loginWithFB(){
 
         accessTokenTracker = new AccessTokenTracker() {
             @Override
