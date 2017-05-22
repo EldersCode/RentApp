@@ -35,6 +35,35 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:text="@string/priceText"
+                android:textColor="@android:color/black"
+                android:textSize="18sp"
+                android:textStyle="italic"
+
+                />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="65dp">
+
+                <EditText
+                    android:id="@+id/Price"
+                    android:layout_width="250dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:ellipsize="end"
+                    android:hint="@string/price"
+                    android:inputType="number"
+                    android:maxLines="1"
+                    android:paddingLeft="10dp"
+                    android:scrollHorizontally="true" />
+
+            </LinearLayout>
+
 
             <TextView
                 android:layout_width="wrap_content"
@@ -196,42 +225,12 @@
                 android:layout_height="40dp">
 
                 <Switch
-                    android:id="@+id/switch1"
+                    android:id="@+id/ParkingSwitch"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="30dp"
-                    android:text="@string/pets"
-                    android:textSize="18sp"
-                    android:textStyle="italic" />
-
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="40dp">
-
-                <Switch
-                    android:id="@+id/switch2"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="30dp"
-                    android:text="@string/pets"
-                    android:textSize="18sp"
-                    android:textStyle="italic" />
-
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="40dp">
-
-                <Switch
-                    android:id="@+id/switch3"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="30dp"
-                    android:text="@string/pets"
+                    android:text="@string/Parking"
                     android:textSize="18sp"
                     android:textStyle="italic" />
 
@@ -242,29 +241,44 @@
                 android:layout_height="40dp">
 
                 <Switch
-                    android:id="@+id/switch4"
+                    android:id="@+id/livingRoomSwitch"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="30dp"
-                    android:text="@string/pets"
+                    android:text="@string/livingRoom"
                     android:textSize="18sp"
                     android:textStyle="italic" />
 
             </LinearLayout>
-
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="40dp">
 
                 <Switch
-                    android:id="@+id/switch5"
+                    android:id="@+id/kitchenSwitch"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="30dp"
-                    android:text="@string/pets"
+                    android:text="@string/kitchen"
+                    android:textSize="18sp"
+                    android:textStyle="italic" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp">
+
+                <Switch
+                    android:id="@+id/coolingSystemSwitch"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="30dp"
+                    android:text="@string/coolingSystem"
                     android:textSize="18sp"
                     android:textStyle="italic" />
 
@@ -276,16 +290,18 @@
                 android:layout_height="40dp">
 
                 <Switch
-                    android:id="@+id/switch6"
+                    android:id="@+id/negotiablePriceSwitch"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="30dp"
-                    android:text="@string/pets"
+                    android:text="@string/negotiablePrice"
                     android:textSize="18sp"
                     android:textStyle="italic" />
 
             </LinearLayout>
+
+
 
 
 
