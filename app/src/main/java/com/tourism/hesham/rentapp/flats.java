@@ -83,6 +83,7 @@ public class flats extends AppCompatActivity {
 
                 ///check if there was a previuos flat or not
 
+                startActivity(new Intent(getApplicationContext() , LocateOnMap.class));
 
                 DatabaseReference users = database.getReference("users");
                 DatabaseReference houses = database.getReference("houses");
@@ -107,9 +108,9 @@ public class flats extends AppCompatActivity {
 
                 regions.child("contry/" + "city/" + "houseId").setValue("location");
 
-                AlertDialog dialog = builder.create();
-
-                dialog.show();
+//                AlertDialog dialog = builder.create();
+//
+//                dialog.show();
             }
         });
         ////////////////
@@ -123,37 +124,37 @@ public class flats extends AppCompatActivity {
 //                    onRetriveData(user.getText().toString(), imageView3, 3);
 //                }
 //            });
-        imageView1 = (ImageView) findViewById(R.id.img1);
-        imageView2 = (ImageView) findViewById(R.id.img2);
-        imageView3 = (ImageView) findViewById(R.id.img3);
+//        imageView1 = (ImageView) findViewById(R.id.img1);
+//        imageView2 = (ImageView) findViewById(R.id.img2);
+//        imageView3 = (ImageView) findViewById(R.id.img3);
 
-        imageView1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(Intent.ACTION_PICK);
-                intent.setType("image/*");
-                startActivityForResult(intent, GALARY_INTENT);
-                i = 1;
-            }
-        });
-        imageView2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(Intent.ACTION_PICK);
-                intent.setType("image/*");
-                startActivityForResult(intent, GALARY_INTENT);
-                i = 2;
-            }
-        });
-        imageView3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(Intent.ACTION_PICK);
-                intent.setType("image/*");
-                startActivityForResult(intent, GALARY_INTENT);
-                i = 3;
-            }
-        });
+//        imageView1.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(Intent.ACTION_PICK);
+//                intent.setType("image/*");
+//                startActivityForResult(intent, GALARY_INTENT);
+//                i = 1;
+//            }
+//        });
+//        imageView2.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(Intent.ACTION_PICK);
+//                intent.setType("image/*");
+//                startActivityForResult(intent, GALARY_INTENT);
+//                i = 2;
+//            }
+//        });
+//        imageView3.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(Intent.ACTION_PICK);
+//                intent.setType("image/*");
+//                startActivityForResult(intent, GALARY_INTENT);
+//                i = 3;
+//            }
+//        });
 
 
     }
