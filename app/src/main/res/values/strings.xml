@@ -24,7 +24,7 @@
     <string name="shores">shore</string>
     <string name="hosbital">hosbital</string>
     <string name="noOfPathes">pathes</string>
-    <string name="apartment_location_english">Set Apartment Location</string>
+    <string name="apartment_location_english">Set Apartment Location Here</string>
     <string name="apartment_area_english">- Apartment area</string>
     <string name="area_hint">put area here ..</string>
     <string name="bedrooms_hint">Number of bedrooms ..</string>

@@ -17,16 +17,17 @@
 
         <Button
             android:id="@+id/locateFlat"
-            android:layout_width="wrap_content"
+            android:layout_width="250dp"
             android:layout_height="wrap_content"
-            android:background="@drawable/behind_menu_btn_bg"
             android:text="@string/apartment_location_english"
             android:textAllCaps="false"
             android:textColor="@android:color/white"
             android:textSize="19sp"
             android:textStyle="italic"
-            android:drawableRight="@mipmap/down"
+            android:background="@drawable/apartment_location"
             />
+
+
     </android.support.v7.widget.Toolbar>
 
     <ScrollView
