@@ -376,7 +376,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                 @Override
                 public void onAnimationEnd(Animator animation) {
-                    startActivity(new Intent(getApplicationContext() , advertises.class));                }
+                    startActivity(new Intent(getApplicationContext() , flats.class));                }
 
                 @Override
                 public void onAnimationCancel(Animator animation) {

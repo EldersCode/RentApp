@@ -419,6 +419,6 @@ public class LocateOnMap extends FragmentActivity implements OnMapReadyCallback
 
     @Override
     public void onBackPressed() {
-        startActivity(new Intent(getApplicationContext(), MapsActivity.class));
+        startActivity(new Intent(getApplicationContext(), flats.class));
     }
 }

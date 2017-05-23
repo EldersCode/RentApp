@@ -28,21 +28,26 @@
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:layout_alignParentBottom="true"
-                android:background="@color/colorAccent"
+                android:background="@drawable/behind_menu_btn_bg"
                 android:elevation="1dp"
-
                 android:clickable="true"
                 />
 
             <Button
                 android:layout_width="100dp"
                 android:layout_height="60dp"
-                android:background="@android:color/holo_orange_dark"
+                android:background="@drawable/menu_btn_bg"
                 android:layout_alignParentBottom="true"
                 android:text="Menu"
                 android:id="@+id/navigation_btn"
                 android:elevation="24dp"
                 android:textAllCaps="false"
+                />
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="7dp"
+                android:background="@drawable/menu_shadow"
+                android:layout_above="@id/navigation_btn"
                 />
 
         </RelativeLayout>
