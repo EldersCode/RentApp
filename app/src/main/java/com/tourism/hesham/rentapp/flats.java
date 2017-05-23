@@ -119,7 +119,6 @@ public class flats extends AppCompatActivity {
                 dialog.dismiss();
             }
         });
-        builder.setView(view);
         locateFlat = (Button) findViewById(R.id.locateFlat);
         locateFlat.setOnClickListener(new View.OnClickListener() {
             @Override

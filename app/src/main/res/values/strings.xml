@@ -40,6 +40,6 @@
     <string name="kitchen">- Kitchen</string>
     <string name="coolingSystem">- Cooling System</string>
     <string name="negotiablePrice">- Negotiable Price</string>
-    <string name="priceText">- Price</string>
+    <string name="priceText">- Price..</string>
     <string name="price">Price</string>
 </resources>

@@ -61,17 +61,17 @@ import handling.recycler.RecyclerAdapter;
 import handling.recycler.Recycler_Listener;
 
 public class LocateOnMap extends FragmentActivity implements OnMapReadyCallback
-     ,GoogleApiClient.ConnectionCallbacks,
+        , GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
         LocationListener {
 
     protected GoogleMap mMap;
-    GoogleApiClient googleApiClient ;
+    GoogleApiClient googleApiClient;
     Location mLastLocation;
 
     ////
     private static final LatLngBounds myBounds = new LatLngBounds(
-            new LatLng(-0,0),new LatLng(0,0));
+            new LatLng(-0, 0), new LatLng(0, 0));
 
     private RecyclerView mRecyclerView;
     private LinearLayoutManager linearLayoutManager;
@@ -83,15 +83,12 @@ public class LocateOnMap extends FragmentActivity implements OnMapReadyCallback
     final static String apiKey = "AIzaSyB9m1fot-VHreEUQxeMNQaF3RJ92VL6f_0";
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_locate_on_map);
         buildGoogleApiClient();
-
-
-
+        googleApiClient.connect();
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -131,8 +128,7 @@ public class LocateOnMap extends FragmentActivity implements OnMapReadyCallback
                 buildGoogleApiClient();
                 mMap.setMyLocationEnabled(true);
             }
-        }
-        else {
+        } else {
             buildGoogleApiClient();
             mMap.setMyLocationEnabled(true);
         }
@@ -141,7 +137,7 @@ public class LocateOnMap extends FragmentActivity implements OnMapReadyCallback
         //to animate camera on the last location when gps closed (it needs database)
         if (ContextCompat.checkSelfPermission(this,
                 android.Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED  &&  mLastLocation != null) {
+                != PackageManager.PERMISSION_GRANTED && mLastLocation != null) {
             mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(
                     new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude()), 12));
         }
@@ -168,7 +164,7 @@ public class LocateOnMap extends FragmentActivity implements OnMapReadyCallback
     }
 
 
-    protected synchronized void buildGoogleApiClient(){
+    protected synchronized void buildGoogleApiClient() {
         googleApiClient = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
@@ -177,17 +173,18 @@ public class LocateOnMap extends FragmentActivity implements OnMapReadyCallback
                 .build();
     }
 
-    private void Initializing(){
-        search_editText = (EditText)findViewById(R.id.search_editTextAd);
-        search_img = (ImageView)findViewById(R.id.search_imgAd);
-        recyclerAdapter = new RecyclerAdapter(this, R.layout.recycler_row , googleApiClient, myBounds , null);
+    private void Initializing() {
+        search_editText = (EditText) findViewById(R.id.search_editTextAd);
+        search_img = (ImageView) findViewById(R.id.search_imgAd);
+        recyclerAdapter = new RecyclerAdapter(this, R.layout.recycler_row, googleApiClient, myBounds, null);
         mRecyclerView = (RecyclerView) findViewById(R.id.recyclerIdAd);
         linearLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(linearLayoutManager);
         mRecyclerView.setAdapter(recyclerAdapter);
+        mRecyclerView.setVisibility(View.GONE);
     }
 
-    private void  AutocompleteApi(){
+    private void AutocompleteApi() {
 
         search_editText.addTextChangedListener(new TextWatcher() {
             @Override
@@ -198,10 +195,11 @@ public class LocateOnMap extends FragmentActivity implements OnMapReadyCallback
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
 
-                if(!s.toString().equals("") && googleApiClient.isConnected()){
+                googleApiClient.connect();
+                if (!s.toString().equals("") && googleApiClient.isConnected()) {
                     recyclerAdapter.getFilter().filter(s.toString());
-                }
-                else if(!googleApiClient.isConnected()){
+                    mRecyclerView.setVisibility(View.VISIBLE);
+                } else if (!googleApiClient.isConnected()) {
                     Toast.makeText(getApplicationContext(), "Google API Client is not connected", Toast.LENGTH_SHORT).show();
 
                 }
@@ -219,7 +217,7 @@ public class LocateOnMap extends FragmentActivity implements OnMapReadyCallback
 
                 new Recycler_Listener(this, new Recycler_Listener.OnItemClickListener() {
                     @Override
-                    public void onItemClick(View view , int position) {
+                    public void onItemClick(View view, int position) {
                         final RecyclerAdapter.AT_Place item = recyclerAdapter.getItem(position);
                         final String placeId = String.valueOf(item.placeId);
 
@@ -232,9 +230,9 @@ public class LocateOnMap extends FragmentActivity implements OnMapReadyCallback
                         placeResult.setResultCallback(new ResultCallback<PlaceBuffer>() {
                             @Override
                             public void onResult(PlaceBuffer places) {
-                                if(places.getCount()==1){
+                                if (places.getCount() == 1) {
                                     //Do the things here on Click.....
-                                    Toast.makeText(getApplicationContext(), "please click on Search button on the left ..",Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getApplicationContext(), "please click on Search button on the left ..", Toast.LENGTH_SHORT).show();
 
                                     //LatLng latLng = String.valueOf(places.get(0).getLatLng()) ;
 
@@ -242,8 +240,8 @@ public class LocateOnMap extends FragmentActivity implements OnMapReadyCallback
                                     search_editText.setText(String.valueOf(places.get(0).getAddress()));
                                     mRecyclerView.setVisibility(View.GONE);
 
-                                }else {
-                                    Toast.makeText(getApplicationContext(),"Something went wrong !",Toast.LENGTH_SHORT).show();
+                                } else {
+                                    Toast.makeText(getApplicationContext(), "Something went wrong !", Toast.LENGTH_SHORT).show();
                                 }
                             }
                         });
@@ -262,12 +260,12 @@ public class LocateOnMap extends FragmentActivity implements OnMapReadyCallback
         //hn5ally el keyboard te5tfy b3d ma el user y5allas ketaba
 
         InputMethodManager inputMethod = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        inputMethod.hideSoftInputFromWindow(search_editText.getWindowToken(),0);
+        inputMethod.hideSoftInputFromWindow(search_editText.getWindowToken(), 0);
 
         try {
 
             if (search_editText.length() == 0) {
-                Log.i("Empty" , "EditText is Empty");
+                Log.i("Empty", "EditText is Empty");
                 Toast.makeText(this, "Please enter the address you want to search for ..", Toast.LENGTH_SHORT).show();
             } else {
 
@@ -275,24 +273,20 @@ public class LocateOnMap extends FragmentActivity implements OnMapReadyCallback
                 //hn5ally el search editText yeb2a feh + ben kol kelma fl address (n7welha le URL form)
 
                 String encodedAddress = URLEncoder.encode(search_editText.getText().toString(), "UTF-8");
-                String  httpWeb = fixedHttp + "address=" + encodedAddress + "&key=" + apiKey;
+                String httpWeb = fixedHttp + "address=" + encodedAddress + "&key=" + apiKey;
 
                 Log.i("httpWeb", httpWeb);
 
 
-
-                    // we open connection by the DownloadTask Class
-                    DownloadTask task = new DownloadTask();
-                    // we used the interface to get the data we have after the onPostExecute method finished to use it ..
-                    task.execute(httpWeb);
+                // we open connection by the DownloadTask Class
+                DownloadTask task = new DownloadTask();
+                // we used the interface to get the data we have after the onPostExecute method finished to use it ..
+                task.execute(httpWeb);
                 search_editText.getText().clear();
 
 
-
-
-
             }
-        } catch(UnsupportedEncodingException e){
+        } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
             Toast.makeText(this, "Please enter the address you want to search for ..", Toast.LENGTH_SHORT).show();
         }
@@ -301,14 +295,10 @@ public class LocateOnMap extends FragmentActivity implements OnMapReadyCallback
     }
 
 
-
-
-    private  class DownloadTask extends AsyncTask<String , Void , String> {
+    private class DownloadTask extends AsyncTask<String, Void, String> {
 
         Double latitude;
         Double longitude;
-
-
 
 
         @Override
@@ -327,7 +317,7 @@ public class LocateOnMap extends FragmentActivity implements OnMapReadyCallback
 
 
                 int data = reader.read();
-                while (data != -1){
+                while (data != -1) {
 
                     char current = (char) data;
                     result += current;
@@ -355,10 +345,10 @@ public class LocateOnMap extends FragmentActivity implements OnMapReadyCallback
 
                 JSONObject jsonObject = new JSONObject(result);
                 String results = jsonObject.getString("results");
-                Log.i("results" , results);
+                Log.i("results", results);
                 JSONArray arr = new JSONArray(results);
 
-                for(int i=0 ; i<arr.length() ; i++){
+                for (int i = 0; i < arr.length(); i++) {
 
                     JSONObject jsonPart = arr.getJSONObject(i);
                     JSONObject jsonGeometry = jsonPart.getJSONObject("geometry");
@@ -368,11 +358,11 @@ public class LocateOnMap extends FragmentActivity implements OnMapReadyCallback
 
                     latitude = Double.valueOf(lat);
                     longitude = Double.valueOf(lng);
-                    Log.i("lat & lng :" , latitude + "  " +longitude);
+                    Log.i("lat & lng :", latitude + "  " + longitude);
 
 
                     mMap.clear();
-                    mMap.addMarker(new MarkerOptions().position(new LatLng(latitude , longitude)).title("here")
+                    mMap.addMarker(new MarkerOptions().position(new LatLng(latitude, longitude)).title("here")
                             .icon(BitmapDescriptorFactory.defaultMarker()).draggable(true));
                     mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latitude, longitude), 7));
                     mMap.setOnMarkerDragListener(new GoogleMap.OnMarkerDragListener() {
@@ -392,10 +382,9 @@ public class LocateOnMap extends FragmentActivity implements OnMapReadyCallback
                         public void onMarkerDragEnd(Marker marker) {
                             //lma el marker yo2af f a5er makan howa da el latlng
                             LatLng latLng = marker.getPosition();
-                            
+
                         }
                     });
-
 
 
                 }
@@ -403,7 +392,6 @@ public class LocateOnMap extends FragmentActivity implements OnMapReadyCallback
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-
 
 
         }
@@ -415,7 +403,7 @@ public class LocateOnMap extends FragmentActivity implements OnMapReadyCallback
     @Override
     protected void onResume() {
         super.onResume();
-        if (!googleApiClient.isConnected() && !googleApiClient.isConnecting() ){
+        if (!googleApiClient.isConnected() && !googleApiClient.isConnecting()) {
             googleApiClient.connect();
         }
     }
@@ -423,7 +411,7 @@ public class LocateOnMap extends FragmentActivity implements OnMapReadyCallback
     @Override
     protected void onPause() {
         super.onPause();
-        if (googleApiClient.isConnected()){
+        if (googleApiClient.isConnected()) {
             googleApiClient.disconnect();
         }
     }
@@ -431,6 +419,6 @@ public class LocateOnMap extends FragmentActivity implements OnMapReadyCallback
 
     @Override
     public void onBackPressed() {
-        startActivity(new Intent(getApplicationContext() , MapsActivity.class));
+        startActivity(new Intent(getApplicationContext(), MapsActivity.class));
     }
 }
