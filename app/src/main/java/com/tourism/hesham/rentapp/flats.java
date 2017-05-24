@@ -31,7 +31,14 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
+
+import static android.R.id.list;
 
 public class flats extends AppCompatActivity {
     private Uri uri1;
@@ -59,13 +66,17 @@ public class flats extends AppCompatActivity {
     private Switch petsSwitch;
     //private DatabaseReference firebaseDatabase;
     private FirebaseDatabase database;
+    private DatabaseReference regions;
+    private  DatabaseReference flatsNo;
     private View view;
     //////////// tack images
     private Button locateFlat;
     private StorageReference storageReference;
     private static final int GALARY_INTENT = 2;
     private int i = 0;
+ private    int x=0;
 
+    private DatabaseReference houses;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -120,42 +131,69 @@ public class flats extends AppCompatActivity {
             }
         });
         builder.setView(view);
+
+        database = FirebaseDatabase.getInstance();
+        houses = database.getReference("houses");
+        regions = database.getReference("regions");
+       flatsNo=database.getReference("flatsNo");
+
+        DatabaseReference users = database.getReference("users");
+
+        users.child("userId/" + "houses/" + "owened/" + "houseId/").push();
+        users.child("userId/" + "houses/" + "owened/" + "houseId/").push();
+//        houses.child("houses").push();
+        flatsNo=database.getReference("flatsNo");
+
+        houses.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                int y=1;
+                x= (int) (dataSnapshot.getChildrenCount())+1;
+                Log . e ( "dddd" , String.valueOf(x)) ;
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
         locateFlat = (Button) findViewById(R.id.locateFlat);
         locateFlat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                database = FirebaseDatabase.getInstance();
 
                 ///check if there was a previuos flat or not
 
-                startActivity(new Intent(getApplicationContext(), LocateOnMap.class));
+//                startActivity(new Intent(getApplicationContext(), LocateOnMap.class));
 
-                DatabaseReference users = database.getReference("users");
-                DatabaseReference houses = database.getReference("houses");
-                DatabaseReference regions = database.getReference("regions");
+                DatabaseReference ref = houses . child(String.valueOf(x)) ;
+                ref . child( "bedRoomsNo/" ) . setValue( noOfBedRoomsEditText . getText() . toString() ) ;
+                ref . child( "bathNo/" ) . setValue( noOfBathRoomsEditText . getText() . toString() ) ;
+                ref . child( "price/" ) . setValue( priceEditText . getText() . toString() ) ;
+                ref . child( "parking/" ) . setValue( String . valueOf( parkingLotsSwitch . isChecked() ) ) ;
+                ref . child( "negotiablePrice/" ) . setValue( String . valueOf( NegotiablePriceSwitch . isChecked() ) ) ;
+                ref . child( "livingRoom/" ) . setValue( String . valueOf( LivingRoomSwitch . isChecked() ) ) ;
+                ref . child( "pets/" ) . setValue( "boolean" ) ;
+                ref . child( "kitchen/" ) . setValue( String . valueOf( KitchenSwitch . isChecked() ) ) ;
+                ref . child( "coolingSystem/" ) . setValue( String . valueOf( coolingSystemSwitch . isChecked() ) ) ;
+                ref . child( "area/" ) . setValue( ApartmentAreaEditText . getText() . toString() ) ;
+                ref . child( "houseIdNo/" + "location/" ) . setValue( "" ) ;
+                regions . child( "contry/" + "city/" + flatsNo . getKey() ) . setValue( "location" ) ;
 
-                users.child("userId/" + "houses/" + "owened/" + "houseId/").setValue("");
 
-                houses.child("houseId/" + "bedRoomsNo/").setValue(noOfBedRoomsEditText.getText().toString());
-                houses.child("houseId/" + "bathNo/").setValue(noOfBathRoomsEditText.getText().toString());
-                houses.child("houseId/" + "price/").setValue(priceEditText.getText().toString());
-                houses.child("houseId/" + "parking/").setValue(String.valueOf(parkingLotsSwitch.isChecked()));
-                houses.child("houseId/" + "negotiablePrice/").setValue(String.valueOf(NegotiablePriceSwitch.isChecked()));
-                houses.child("houseId/" + "livingRoom/").setValue(String.valueOf(LivingRoomSwitch.isChecked()));
-                houses.child("houseId/" + "pets/").setValue("boolean");
-                houses.child("houseId/" + "kitchen/").setValue(String.valueOf(KitchenSwitch.isChecked()));
-                houses.child("houseId/" + "coolingSystem/").setValue(String.valueOf(coolingSystemSwitch.isChecked()));
-                houses.child("houseId/" + "area/").setValue(ApartmentAreaEditText.getText().toString());
-                houses.child("houseId/" + "houseIdNo/" + "location/").setValue("");
 
-                regions.child("contry/" + "city/" + "houseId").setValue("location");
+
 
 //                AlertDialog dialog = builder.create();
 //
 //                dialog.show();
             }
         });
+        /////
+
         ////////////////
         storageReference = FirebaseStorage.getInstance().getReference();
 
