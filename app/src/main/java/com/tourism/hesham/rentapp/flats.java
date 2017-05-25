@@ -135,13 +135,13 @@ public class flats extends AppCompatActivity {
         database = FirebaseDatabase.getInstance();
         houses = database.getReference("houses");
         regions = database.getReference("regions");
-       flatsNo=database.getReference("flatsNo");
+        flatsNo=database.getReference("flatsNo");
 
-        DatabaseReference users = database.getReference("users");
+        final DatabaseReference users = database.getReference("users");
 
         users.child("userId/" + "houses/" + "owened/" + "houseId/").push();
-        users.child("userId/" + "houses/" + "owened/" + "houseId/").push();
-//        houses.child("houses").push();
+        users.child("userId/" + "houses/" + "owened/" ).push();
+//      houses.child("houses").push();
         flatsNo=database.getReference("flatsNo");
 
         houses.addValueEventListener(new ValueEventListener() {
@@ -181,8 +181,8 @@ public class flats extends AppCompatActivity {
                 ref . child( "coolingSystem/" ) . setValue( String . valueOf( coolingSystemSwitch . isChecked() ) ) ;
                 ref . child( "area/" ) . setValue( ApartmentAreaEditText . getText() . toString() ) ;
                 ref . child( "houseIdNo/" + "location/" ) . setValue( "" ) ;
-                regions . child( "contry/" + "city/" + flatsNo . getKey() ) . setValue( "location" ) ;
-
+                regions . child( "contry/" + "city/housesId/" + String . valueOf(x) ) . setValue( "location" ) ;
+                users . child( "houseId/" + String . valueOf(x) ) . setValue("") ;
 
 
 
