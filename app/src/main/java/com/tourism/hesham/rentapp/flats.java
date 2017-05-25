@@ -127,7 +127,7 @@ private int flatsNo =0;
         houses.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                 flatsNo= (int) dataSnapshot.getChildrenCount();
+                 flatsNo= (int) dataSnapshot.getChildrenCount()+1;
 Log.e("nnnnnnn", String.valueOf(flatsNo));
             }
 

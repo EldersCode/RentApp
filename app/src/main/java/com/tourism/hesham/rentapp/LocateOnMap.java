@@ -21,10 +21,14 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.firebase.client.FirebaseError;
+import com.firebase.geofire.GeoFire;
+import com.firebase.geofire.GeoLocation;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
@@ -43,6 +47,11 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -79,6 +88,8 @@ public class LocateOnMap extends FragmentActivity implements OnMapReadyCallback
     private EditText search_editText;
     private ImageView search_img;
 
+    private int flatNo;
+
     final static String fixedHttp = "https://maps.googleapis.com/maps/api/geocode/json?";
     final static String apiKey = "AIzaSyB9m1fot-VHreEUQxeMNQaF3RJ92VL6f_0";
 
@@ -89,7 +100,20 @@ public class LocateOnMap extends FragmentActivity implements OnMapReadyCallback
         setContentView(R.layout.activity_locate_on_map);
         buildGoogleApiClient();
         googleApiClient.connect();
+        final FirebaseDatabase   database = FirebaseDatabase.getInstance();
 
+                                   DatabaseReference houses = database.getReference("houses");
+houses.addValueEventListener(new ValueEventListener() {
+    @Override
+    public void onDataChange(DataSnapshot dataSnapshot) {
+   flatNo= (int) dataSnapshot.getChildrenCount();
+    }
+
+    @Override
+    public void onCancelled(DatabaseError databaseError) {
+
+    }
+});
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -229,12 +253,10 @@ public class LocateOnMap extends FragmentActivity implements OnMapReadyCallback
                                 .getPlaceById(googleApiClient, placeId);
                         placeResult.setResultCallback(new ResultCallback<PlaceBuffer>() {
                             @Override
-                            public void onResult(PlaceBuffer places) {
+                            public void onResult(final PlaceBuffer places) {
                                 if (places.getCount() == 1) {
                                     //Do the things here on Click.....
                                     Toast.makeText(getApplicationContext(), "please click on Search button on the left ..", Toast.LENGTH_SHORT).show();
-
-                                    //LatLng latLng = String.valueOf(places.get(0).getLatLng()) ;
 
                                     //////////// hena bageb el latitude w el longitude w ab3thom lel map !! aw a7sn a5ally el edit text yeb2a feh el address
                                     search_editText.setText(String.valueOf(places.get(0).getAddress()));
@@ -379,10 +401,43 @@ public class LocateOnMap extends FragmentActivity implements OnMapReadyCallback
                         }
 
                         @Override
-                        public void onMarkerDragEnd(Marker marker) {
+                        public void onMarkerDragEnd(final Marker marker) {
                             //lma el marker yo2af f a5er makan howa da el latlng
-                            LatLng latLng = marker.getPosition();
+                            final LatLng latLng = marker.getPosition();
+                            Button submit=(Button) findViewById(R.id.submit);
+                            submit.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
 
+                                    FirebaseDatabase   database = FirebaseDatabase.getInstance();
+
+//                                   DatabaseReference houses = database.getReference("houses");
+                                    DatabaseReference ref = database.getReference("houses/"+flatNo+"/Loc");
+                                    DatabaseReference regions = database.getReference("regions/"+"contry/" + "city/" + flatNo);
+GeoFire geoFireR=new GeoFire(regions);
+                                    GeoFire geoFire = new GeoFire(ref);
+//                                    LatLng latLng = places.get(0).getLatLng() ;
+
+                                    geoFire.setLocation(String.valueOf(flatNo), new GeoLocation(marker.getPosition().latitude, marker.getPosition().longitude), new GeoFire.CompletionListener() {
+                                        @Override
+                                        public void onComplete(String key, DatabaseError error) {
+
+                                            Toast.makeText(getApplicationContext(),"done",Toast.LENGTH_LONG).show();
+                                        }
+
+
+                                    }); geoFireR.setLocation(String.valueOf(flatNo), new GeoLocation(marker.getPosition().latitude, marker.getPosition().longitude), new GeoFire.CompletionListener() {
+                                        @Override
+                                        public void onComplete(String key, DatabaseError error) {
+
+                                            Toast.makeText(getApplicationContext(),"done",Toast.LENGTH_LONG).show();
+                                        }
+
+
+                                    });
+
+                                }
+                            });
                         }
                     });
 
