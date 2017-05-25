@@ -42,4 +42,9 @@
     <string name="negotiablePrice">- Negotiable Price</string>
     <string name="priceText">- Price..</string>
     <string name="price">Price</string>
+    <string name="SearchForAnApartment_Menu">Search For A new Apartment</string>
+    <string name="SearchForAnApartmentHint_Menu">Either you wana Buy Or Rent An Apartment</string>
+    <string name="CreateEvent_Menu">Serach For Event</string>
+    <string name="CreateEventHint_Menu">Discover All the Events That is Happening In Ur Area Or any Place In The World</string>
+
 </resources>
