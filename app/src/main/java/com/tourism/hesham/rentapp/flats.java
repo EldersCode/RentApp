@@ -65,7 +65,8 @@ public class flats extends AppCompatActivity {
     private StorageReference storageReference;
     private static final int GALARY_INTENT = 2;
     private int i = 0;
-
+private int flatsNo =0;
+    private DatabaseReference houses;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -102,21 +103,37 @@ public class flats extends AppCompatActivity {
 
         profile = Profile.getCurrentProfile();
         profile.getId();
-        view = LayoutInflater.from(flats.this).inflate(R.layout.activity_locate_on_map, null, false);
+       // view = LayoutInflater.from(flats.this).inflate(R.layout.activity_locate_on_map, null, false);
 
-        builder = new AlertDialog.Builder(flats.this);
-        builder.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+//        builder = new AlertDialog.Builder(flats.this);
+//        builder.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialog, int which) {
+//                if (view != null) {
+
+//                    ViewGroup parentViewGroup = (ViewGroup) view.getParent();
+
+//                    if (parentViewGroup != null) {
+//                        parentViewGroup.removeAllViews();
+//                    }
+//                }
+//                dialog.dismiss();
+//            }
+//        });
+        database = FirebaseDatabase.getInstance();
+
+        houses = database.getReference("houses");
+
+        houses.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which) {
-                if (view != null) {
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                 flatsNo= (int) dataSnapshot.getChildrenCount();
+Log.e("nnnnnnn", String.valueOf(flatsNo));
+            }
 
-                    ViewGroup parentViewGroup = (ViewGroup) view.getParent();
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
 
-                    if (parentViewGroup != null) {
-                        parentViewGroup.removeAllViews();
-                    }
-                }
-                dialog.dismiss();
             }
         });
         locateFlat = (Button) findViewById(R.id.locateFlat);
@@ -124,31 +141,29 @@ public class flats extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                database = FirebaseDatabase.getInstance();
 
                 ///check if there was a previuos flat or not
 
                 startActivity(new Intent(getApplicationContext(), LocateOnMap.class));
 
                 DatabaseReference users = database.getReference("users");
-                DatabaseReference houses = database.getReference("houses");
                 DatabaseReference regions = database.getReference("regions");
 
-                users.child("userId/" + "houses/" + "owened/" + "houseId/").setValue("");
+                users.child("userId/" + "houses/" + "owened/" + "houseId/"+flatsNo).setValue("");
 
-                houses.child("houseId/" + "bedRoomsNo/").setValue(noOfBedRoomsEditText.getText().toString());
-                houses.child("houseId/" + "bathNo/").setValue(noOfBathRoomsEditText.getText().toString());
-                houses.child("houseId/" + "price/").setValue(priceEditText.getText().toString());
-                houses.child("houseId/" + "parking/").setValue(String.valueOf(parkingLotsSwitch.isChecked()));
-                houses.child("houseId/" + "negotiablePrice/").setValue(String.valueOf(NegotiablePriceSwitch.isChecked()));
-                houses.child("houseId/" + "livingRoom/").setValue(String.valueOf(LivingRoomSwitch.isChecked()));
-                houses.child("houseId/" + "pets/").setValue("boolean");
-                houses.child("houseId/" + "kitchen/").setValue(String.valueOf(KitchenSwitch.isChecked()));
-                houses.child("houseId/" + "coolingSystem/").setValue(String.valueOf(coolingSystemSwitch.isChecked()));
-                houses.child("houseId/" + "area/").setValue(ApartmentAreaEditText.getText().toString());
-                houses.child("houseId/" + "houseIdNo/" + "location/").setValue("");
+                houses.child(flatsNo + "/bedRoomsNo/").setValue(noOfBedRoomsEditText.getText().toString());
+                houses.child(flatsNo + "/bathNo/").setValue(noOfBathRoomsEditText.getText().toString());
+                houses.child(flatsNo + "/price/").setValue(priceEditText.getText().toString());
+                houses.child(flatsNo + "/parking/").setValue(String.valueOf(parkingLotsSwitch.isChecked()));
+                houses.child(flatsNo + "/negotiablePrice/").setValue(String.valueOf(NegotiablePriceSwitch.isChecked()));
+                houses.child(flatsNo + "/livingRoom/").setValue(String.valueOf(LivingRoomSwitch.isChecked()));
+                houses.child(flatsNo + "/pets/").setValue("boolean");
+                houses.child(flatsNo + "/kitchen/").setValue(String.valueOf(KitchenSwitch.isChecked()));
+                houses.child(flatsNo + "/coolingSystem/").setValue(String.valueOf(coolingSystemSwitch.isChecked()));
+                houses.child(flatsNo + "/area/").setValue(ApartmentAreaEditText.getText().toString());
+                houses.child(flatsNo + "/houseIdNo/" + "location/").setValue("");
 
-                regions.child("contry/" + "city/" + "houseId").setValue("location");
+                regions.child("contry/" + "city/" + flatsNo).setValue("location");
 
 //                AlertDialog dialog = builder.create();
 //
