@@ -23,6 +23,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.facebook.Profile;
 import com.facebook.login.LoginManager;
 import com.google.android.gms.common.ConnectionResult;
@@ -40,6 +41,13 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.auth.FirebaseAuth;
+import com.nightonke.boommenu.BoomButtons.ButtonPlaceEnum;
+import com.nightonke.boommenu.BoomButtons.HamButton;
+import com.nightonke.boommenu.BoomButtons.OnBMClickListener;
+import com.nightonke.boommenu.BoomButtons.SimpleCircleButton;
+import com.nightonke.boommenu.BoomMenuButton;
+import com.nightonke.boommenu.ButtonEnum;
+import com.nightonke.boommenu.Piece.PiecePlaceEnum;
 import com.squareup.picasso.Picasso;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -47,6 +55,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -58,20 +67,21 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
         LocationListener
-        ,AsyncResponse,
+        , AsyncResponse,
         NavigationView.OnNavigationItemSelectedListener {
 
     private GoogleMap mMap;
-    GoogleApiClient mGoogleApiClient ;
+    GoogleApiClient mGoogleApiClient;
     Location mLastLocation;
     Marker mCurrLocationMarker;
     LocationRequest mLocationRequest;
     private Button navigation_btn;
-    private TextView profileName , profileId;
+    private TextView profileName, profileId;
     private CircleImageView profileImg;
 
     private EditText search_editText;
 
+    private BoomMenuButton bmb;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,6 +89,35 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         setContentView(R.layout.activity_maps);
         buildGoogleApiClient();
 
+        // Boom Menu
+
+        //Mibmab
+        int ImagesForTheMenu[] = new int[]{R.mipmap.gift, R.mipmap.stage};
+        int TextForMenu[] = new int[]{R.string.SearchForAnApartment_Menu, R.string.CreateEvent_Menu};
+        int HintTextForMenu[] = new int[]{R.string.SearchForAnApartmentHint_Menu, R.string.CreateEventHint_Menu};
+
+        BoomMenuButton bmb = (BoomMenuButton) findViewById(R.id.bmb);
+        bmb.setButtonEnum(ButtonEnum.Ham);
+        bmb.setPiecePlaceEnum(PiecePlaceEnum.HAM_2);
+        bmb.setButtonPlaceEnum(ButtonPlaceEnum.HAM_2);
+        for (int i = 0; i < bmb.getPiecePlaceEnum().pieceNumber(); i++) {
+            HamButton.Builder builder = new HamButton.Builder().listener(new OnBMClickListener() {
+                @Override
+                public void onBoomButtonClick(int index) {
+                    // Still No Activites
+                }
+            })
+
+                    .normalImageRes(ImagesForTheMenu[i])
+                    .normalTextRes(TextForMenu[i])
+                    .subNormalTextRes(HintTextForMenu[i]);
+
+
+            bmb.addBuilder(builder);
+        }
+
+
+        //
 
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             checkLocationPermission();
@@ -87,7 +126,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-
 
 
         navigation_btn = (Button) findViewById(R.id.navigation_btn);
@@ -106,15 +144,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         //Initiallizing header component
 
         View headerView = navigationView.getHeaderView(0);
-        profileImg = (CircleImageView)headerView.findViewById(R.id.circularImageView);
-        profileName = (TextView)headerView.findViewById(R.id.profile_name);
-        profileId = (TextView)headerView.findViewById(R.id.profile_id);
+        profileImg = (CircleImageView) headerView.findViewById(R.id.circularImageView);
+        profileName = (TextView) headerView.findViewById(R.id.profile_name);
+        profileId = (TextView) headerView.findViewById(R.id.profile_id);
 
         //initializing search edit text here
 //        HandleSearchET();
 
 
-        search_editText = (EditText)headerView.findViewById(R.id.search_editText);
+        search_editText = (EditText) headerView.findViewById(R.id.search_editText);
 
         search_editText.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -129,7 +167,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                     @Override
                     public void onAnimationEnd(Animator animation) {
-                        startActivity(new Intent(getApplicationContext(),SearchActivity.class));
+                        startActivity(new Intent(getApplicationContext(), SearchActivity.class));
                     }
 
                     @Override
@@ -151,14 +189,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         /////////// hena ya H te2dar teb3t el data lel firebase mn el profile object ..
 
-            // put user data into navigation drawer header ....
-        try{
+        // put user data into navigation drawer header ....
+        try {
             Profile profile = Profile.getCurrentProfile();
             profileName.setText(profile.getName());
             profileId.setText(profile.getId());
-            Picasso.with(this).load(profile.getProfilePictureUri(100,100)).into(profileImg);
+            Picasso.with(this).load(profile.getProfilePictureUri(100, 100)).into(profileImg);
 
-        }catch (Exception e){
+        } catch (Exception e) {
 
         }
 
@@ -174,15 +212,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             task.delegate = this;
             task.execute(address);
 
-        }catch (Exception exp){
+        } catch (Exception exp) {
             //   Toast.makeText(this, "This Place not found or connection lost ..", Toast.LENGTH_SHORT).show();
 
         }
 
     }
-
-
-
 
 
     /**
@@ -207,8 +242,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 buildGoogleApiClient();
                 mMap.setMyLocationEnabled(true);
             }
-        }
-        else {
+        } else {
             buildGoogleApiClient();
             mMap.setMyLocationEnabled(true);
         }
@@ -217,7 +251,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         //to animate camera on the last location when gps closed (it needs database)
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED  &&  mLastLocation != null) {
+                != PackageManager.PERMISSION_GRANTED && mLastLocation != null) {
             mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(
                     new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude()), 12));
         }
@@ -266,7 +300,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         markerOptions.position(latLng);
         markerOptions.title("Current Position");
         markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA));
-      //  mCurrLocationMarker = mMap.addMarker(markerOptions);
+        //  mCurrLocationMarker = mMap.addMarker(markerOptions);
 
         //move map camera
         mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
@@ -284,7 +318,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
-    public boolean checkLocationPermission(){
+
+    public boolean checkLocationPermission() {
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
@@ -376,7 +411,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                 @Override
                 public void onAnimationEnd(Animator animation) {
-                    startActivity(new Intent(getApplicationContext() , advertises.class));                }
+                    startActivity(new Intent(getApplicationContext(), flats.class));
+                }
 
                 @Override
                 public void onAnimationCancel(Animator animation) {
@@ -402,6 +438,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 public void onAnimationEnd(Animator animation) {
                     startActivity(new Intent(getApplicationContext(), EventsActivity.class));
                 }
+
                 @Override
                 public void onAnimationCancel(Animator animation) {
 
@@ -414,14 +451,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             });
 
 
-        } else if (id == R.id.logout){
+        } else if (id == R.id.logout) {
 
             //n5ally el info ely fl nav header teb2a empty ..
             profileName.setText("");
             profileImg.clearAnimation();
             profileId.setText("");
 
-            Intent intent = new Intent(getApplicationContext() , LoginActivity.class);
+            Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
             startActivity(intent);
             finish();
             FirebaseAuth.getInstance().signOut();
@@ -450,26 +487,24 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     protected void onStart() {
         super.onStart();
         Profile profile = Profile.getCurrentProfile();
-        Log.i("Facebook name" , profile.getName());
+        Log.i("Facebook name", profile.getName());
     }
 
     @Override
     public void processFinish(String output) {
-        Log.i("output" , output);
+        Log.i("output", output);
 
         try {
 
             JSONObject jsonObject = new JSONObject(output);
             String results = jsonObject.getString("results");
-            Log.i("results" , results);
+            Log.i("results", results);
             JSONArray arr = new JSONArray(results);
-
-
 
 
             // getting lat & lng from jason
 
-            for(int i=0 ; i<arr.length() ; i++){
+            for (int i = 0; i < arr.length(); i++) {
 
                 JSONObject jsonPart = arr.getJSONObject(i);
                 JSONObject jsonGeometry = jsonPart.getJSONObject("geometry");
@@ -478,9 +513,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 String lng = jsonLocation.getString("lng");
 
 
-                Double  latitude = Double.valueOf(lat);
-                Double  longitude = Double.valueOf(lng);
-                Log.i("lat & lng :" , latitude + "  " +longitude);
+                Double latitude = Double.valueOf(lat);
+                Double longitude = Double.valueOf(lng);
+                Log.i("lat & lng :", latitude + "  " + longitude);
 
                 //b7rk el camera 3al makan fl map
                 mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latitude, longitude), 7));
@@ -495,14 +530,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     //here the download task class to handle retrieving data from api
 
-     private  class DownloadTask extends AsyncTask<String , Void , String> {
+    private class DownloadTask extends AsyncTask<String, Void, String> {
 
         Double latitude;
         Double longitude;
 
         public AsyncResponse delegate = null;
-
-
 
 
         @Override
@@ -521,7 +554,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
 
                 int data = reader.read();
-                while (data != -1){
+                while (data != -1) {
 
                     char current = (char) data;
                     result += current;
@@ -549,10 +582,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                 JSONObject jsonObject = new JSONObject(result);
                 String results = jsonObject.getString("results");
-                Log.i("results" , results);
+                Log.i("results", results);
                 JSONArray arr = new JSONArray(results);
 
-                for(int i=0 ; i<arr.length() ; i++){
+                for (int i = 0; i < arr.length(); i++) {
 
                     JSONObject jsonPart = arr.getJSONObject(i);
                     JSONObject jsonGeometry = jsonPart.getJSONObject("geometry");
@@ -562,7 +595,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                     latitude = Double.valueOf(lat);
                     longitude = Double.valueOf(lng);
-                    Log.i("lat & lng :" , latitude + "  " +longitude);
+                    Log.i("lat & lng :", latitude + "  " + longitude);
 
 
                 }
@@ -572,14 +605,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
 
 
-
             delegate.processFinish(result);
 
 
         }
 
 
-}
+    }
 
 }
 

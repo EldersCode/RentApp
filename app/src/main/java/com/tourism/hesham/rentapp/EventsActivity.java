@@ -3,6 +3,7 @@ package com.tourism.hesham.rentapp;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -12,6 +13,23 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.Toast;
+
+import com.mikepenz.materialdrawer.AccountHeader;
+import com.mikepenz.materialdrawer.AccountHeaderBuilder;
+import com.mikepenz.materialdrawer.Drawer;
+import com.mikepenz.materialdrawer.DrawerBuilder;
+import com.mikepenz.materialdrawer.model.DividerDrawerItem;
+import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
+import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
+import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
+import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
+import com.mikepenz.materialdrawer.model.interfaces.IProfile;
+import com.nightonke.boommenu.BoomButtons.ButtonPlaceEnum;
+import com.nightonke.boommenu.BoomButtons.SimpleCircleButton;
+import com.nightonke.boommenu.BoomMenuButton;
+import com.nightonke.boommenu.ButtonEnum;
+import com.nightonke.boommenu.Piece.PiecePlaceEnum;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -20,41 +38,46 @@ import java.util.List;
 
 public class EventsActivity extends AppCompatActivity {
 
-    private LinearLayout  TheEventTypesContainor;
-    private Button ToggleTheEventTypeContainorBtn;
-    private boolean IsItHidden;
-
+    private BoomMenuButton bmb;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_events);
+        bmb = (BoomMenuButton) findViewById(R.id.bmb);
+        bmb.setButtonEnum(ButtonEnum.SimpleCircle);
+        bmb.setPiecePlaceEnum(PiecePlaceEnum.DOT_3_1);
+        bmb.setButtonPlaceEnum(ButtonPlaceEnum.SC_3_3);
+        for (int i = 0; i < bmb.getButtonPlaceEnum().buttonNumber(); i++) {
+            bmb.addBuilder(new SimpleCircleButton.Builder()
+                    .normalImageRes(R.mipmap.trophy));
+        }
+        new DrawerBuilder().withActivity(this).build();
 
 
-        TheEventTypesContainor = (LinearLayout) findViewById(R.id.EventTypeContanierid);
-        TheEventTypesContainor.setVisibility(LinearLayout.GONE);
+        //if you want to update the items at a later time it is recommended to keep it in a variable
+        PrimaryDrawerItem item1 = new PrimaryDrawerItem().withIdentifier(1).withName(R.string.noOfBedrooms);
+        SecondaryDrawerItem item2 = new SecondaryDrawerItem().withIdentifier(2).withName(R.string.noOfBedrooms);
 
-        IsItHidden =true;
+//create the drawer and remember the `Drawer` result object
+        Toolbar toolbar = null;
+        Drawer result = new DrawerBuilder()
+                .withActivity(this)
+                .withToolbar(toolbar)
+                .addDrawerItems(
+                        item1,
+                        new DividerDrawerItem(),
+                        item2,
+                        new SecondaryDrawerItem().withName(R.string.register_btn)
+                ).withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
+                    @Override
+                    public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
+                        Toast.makeText(getApplicationContext(),"you clicked item  "+ position +" yaa morsy " ,Toast.LENGTH_LONG).show();
+                        return true;
+                    }
+                })
+                .build();
 
-        ToggleTheEventTypeContainorBtn=(Button) findViewById(R.id.ToggleTheEventTypeContainorArrowId);
-
-        ToggleTheEventTypeContainorBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                if(IsItHidden ==true) {
-                    TheEventTypesContainor.setVisibility(LinearLayout.VISIBLE);
-                    ToggleTheEventTypeContainorBtn.setBackgroundResource(R.mipmap.gift);
-                    IsItHidden=false;
-                }
-                else{TheEventTypesContainor.setVisibility(LinearLayout.GONE);
-                    ToggleTheEventTypeContainorBtn.setBackgroundResource(R.mipmap.gift);
-                    IsItHidden=true;
-                }
-
-
-            }
-        });
 
 
     }
@@ -62,7 +85,7 @@ public class EventsActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        startActivity(new Intent(getApplicationContext() , MapsActivity.class));
+        startActivity(new Intent(getApplicationContext(), MapsActivity.class));
     }
 }
 

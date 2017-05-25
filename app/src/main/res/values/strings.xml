@@ -24,7 +24,7 @@
     <string name="shores">shore</string>
     <string name="hosbital">hosbital</string>
     <string name="noOfPathes">pathes</string>
-    <string name="apartment_location_english">Set Apartment Location</string>
+    <string name="apartment_location_english">Set Apartment Location Here</string>
     <string name="apartment_area_english">- Apartment area</string>
     <string name="area_hint">put area here ..</string>
     <string name="bedrooms_hint">Number of bedrooms ..</string>
@@ -40,6 +40,11 @@
     <string name="kitchen">- Kitchen</string>
     <string name="coolingSystem">- Cooling System</string>
     <string name="negotiablePrice">- Negotiable Price</string>
-    <string name="priceText">- Price</string>
+    <string name="priceText">- Price..</string>
     <string name="price">Price</string>
+    <string name="SearchForAnApartment_Menu">Search For A new Apartment</string>
+    <string name="SearchForAnApartmentHint_Menu">Either you wana Buy Or Rent An Apartment</string>
+    <string name="CreateEvent_Menu">Serach For Event</string>
+    <string name="CreateEventHint_Menu">Discover All the Events That is Happening In Ur Area Or any Place In The World</string>
+
 </resources>
