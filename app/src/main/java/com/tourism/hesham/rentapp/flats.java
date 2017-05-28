@@ -71,7 +71,7 @@ private int flatsNo =0;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.flats);
-//declearing inistances
+        //declearing inistances
         petsLayout = (LinearLayout) findViewById(R.id.switchOn_pets);
         petsSwitch = (Switch) findViewById(R.id.petSwitch);
         priceEditText = (EditText) findViewById(R.id.Price);

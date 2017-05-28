@@ -62,6 +62,10 @@ public class LoginActivity extends AppCompatActivity {
 
     private FirebaseDatabase database;
 
+    //Login Views declaration
+    private EditText emailL , passwordL;
+    private Button login_emailPass , registerAct;
+
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -105,6 +109,19 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+        login_emailPass.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                LoginWithEmailPassword();
+            }
+        });
+
+        registerAct.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+               startActivity(new Intent(getApplicationContext() , RegisterActivity.class ));
+            }
+        });
 
 
 
@@ -116,6 +133,12 @@ public class LoginActivity extends AppCompatActivity {
         callbackManager = CallbackManager.Factory.create();
         login_btn = (LoginButton) findViewById(R.id.login_button);
         facebook_btn = (Button)findViewById(R.id.myfacebook);
+
+        //Login Views with email and password
+        emailL = (EditText)findViewById(R.id.email_login);
+        passwordL = (EditText)findViewById(R.id.password_login);
+        login_emailPass = (Button)findViewById(R.id.login);
+        registerAct = (Button)findViewById(R.id.register);
 
     }
 
@@ -193,6 +216,52 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
+    String emai = "gfdgfdgfd";
+
+    private void LoginWithEmailPassword(){
+
+        String EmailL = emailL.getText().toString().trim();
+        String PasswordL = passwordL.getText().toString().trim();
+
+        if (TextUtils.isEmpty(EmailL)) {
+            Toast.makeText(getApplicationContext(), "Enter email address!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (TextUtils.isEmpty(PasswordL)) {
+            Toast.makeText(getApplicationContext(), "Enter password!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (passwordL.length() < 6) {
+            Toast.makeText(getApplicationContext(), "Password too short, enter minimum 6 characters!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+
+        mAuth.signInWithEmailAndPassword(EmailL, PasswordL)
+                .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        // If sign in fails, display a message to the user. If sign in succeeds
+                        // the auth state listener will be notified and logic to handle the
+                        // signed in user can be handled in the listener.
+                        if (!task.isSuccessful()) {
+                            // there was an error
+                            if (passwordL.length() < 6) {
+                                passwordL.setError("Wrong Password");
+                            } else {
+                                Toast.makeText(LoginActivity.this, "Auth Failed", Toast.LENGTH_LONG).show();
+                            }
+                        } else {
+                            Intent intent = new Intent(LoginActivity.this, MapsActivity.class);
+                            startActivity(intent);
+                            finish();
+                        }
+                    }
+                });
+
+    }
 
 
     private void handleFacebookAccessToken(AccessToken token) {

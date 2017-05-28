@@ -486,8 +486,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     protected void onStart() {
         super.onStart();
-        Profile profile = Profile.getCurrentProfile();
-        Log.i("Facebook name", profile.getName());
+        try {
+            Profile profile = Profile.getCurrentProfile();
+            Log.i("Facebook name", profile.getName());
+        }catch (Exception e){
+
+        }
     }
 
     @Override
